@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Transactions - Farmfills Admin</title>
+        <link href="{% static 'admin/css/styles.css' %}" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <link href='https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css' rel='stylesheet' type='text/css'>
+    </head>
+    <body class="sb-nav-fixed">
+        
+        
+        <!-- Top Nav Bar -->
+        {% include 'admin/components/top-nav.html' %}
+
+        <div id="layoutSidenav">
+
+
+            <!-- Side Nav bar -->
+            {% include 'admin/components/side-nav.html' %}
+
+
+            <!-- Main Area  -->
+            <div id="layoutSidenav_content">
+                
+                <!-- Main Content Goes here -->
+                <main>
+                    <div class="container-fluid px-4">
+
+                        <div class="p-2">
+                            <h1 class="mt-4">Customer Transactions</h1>
+                    
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="{% url 'admin_customers_followup' %}" style='text-decoration:none;color:#00208c'>Followup</a></li>
+                                <li class="breadcrumb-item active">Transaction of user {{ customer.id }}</li>
+                            </ol>
+                        </div>
+
+                        <div class="card mb-4">
+
+                            <div class="card-header">
+                                <i class="fas fa-user me-1"></i>
+                                {{customer.delivery_name}}
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="table-responsive-sm">
+                                    <table id="datatablesSimple" class="table table-striped table-bordered table-responsive" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Date</th>
+                                                <th>Transaction Type</th>
+                                                <th>Amount</th>
+                                                <th>Quantity</th>
+                                                <th>Description</th>
+                                                <th>Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for t in transaction_data %}
+
+                                                {% if t.get_transaction_type == 'payment' %}
+                                                    <tr style="background: rgb(206, 255, 206);">
+                                                        <td>{{ t.id }}</td>
+                                                        <td>{{ t.date|date:"M d, Y" }}</td>
+                                                        <td>{{ t.get_transaction_type }}</td>
+                                                        <td>{{ t.amount }}</td>
+                                                        <td>{{ t.quantity }}</td>
+                                                        <td>{{ t.description }}</td>
+                                                        <td>{{ t.balance }}</td>
+                                                    </tr>
+                                                {% elif t.get_transaction_type == 'refund' %}
+                                                    <tr style="background: rgb(255, 227, 210);">
+                                                        <td>{{ t.id }}</td>
+                                                        <td>{{ t.date|date:"M d, Y" }}</td>
+                                                        <td>{{ t.get_transaction_type }}</td>
+                                                        <td>{{ t.amount }}</td>
+                                                        <td>{{ t.quantity }}</td>
+                                                        <td>{{ t.description }}</td>
+                                                        <td>{{ t.balance }}</td>
+                                                    </tr>
+                                                {% elif t.get_transaction_type == 'extra' %}
+                                                    <tr style="background: rgb(219, 242, 255);">
+                                                        <td>{{ t.id }}</td>
+                                                        <td>{{ t.date|date:"M d, Y" }}</td>
+                                                        <td>{{ t.get_transaction_type }}</td>
+                                                        <td>{{ t.amount }}</td>
+                                                        <td>{{ t.quantity }}</td>
+                                                        <td>{{ t.description }}</td>
+                                                        <td>{{ t.balance }}</td>
+                                                    </tr>
+                                                {% else %}
+                                                    <tr>
+                                                        <td>{{ t.id }}</td>
+                                                        <td>{{ t.date|date:"M d, Y" }}</td>
+                                                        <td>{{ t.get_transaction_type }}</td>
+                                                        <td>{{ t.amount }}</td>
+                                                        <td>{{ t.quantity }}</td>
+                                                        <td>{{ t.description }}</td>
+                                                        <td>{{ t.balance }}</td>
+                                                    </tr>
+                                                {% endif %}
+
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </main>
+
+
+                <!-- Footer -->
+                {% include 'admin/components/footer.html' %}
+
+
+            </div>
+
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'admin/js/scripts.js' %}"></script>
+        <!-- jQuery Library -->
+        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
+        
+        <script>
+
+            window.addEventListener('DOMContentLoaded', event => {
+                    var dataTable = $('#datatablesSimple').DataTable({
+                        "order": [], 
+                    });
+            });
+        </script>
+    </body>
+</html>

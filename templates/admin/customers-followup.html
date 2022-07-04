@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Followup - Farmfills Admin</title>
+        <link href="{% static 'admin/css/styles.css' %}" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <link href='https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css' rel='stylesheet' type='text/css'>
+        <style>
+            .scrolledTable{ overflow-y: auto; clear:both; }
+        </style>
+    </head>
+    <body class="sb-nav-fixed">
+        
+        
+        <!-- Top Nav Bar -->
+        {% include 'admin/components/top-nav.html' %}
+
+        <div id="layoutSidenav">
+
+
+            <!-- Side Nav bar -->
+            {% include 'admin/components/side-nav.html' %}
+
+
+            <!-- Main Area  -->
+            <div id="layoutSidenav_content">
+                
+                <!-- Main Content Goes here -->
+                <main>
+                    <div class="container-fluid px-4">
+
+                        <div class="p-2">
+                            <h1 class="mt-4">Customers Followup</h1>
+                    
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active">Followup</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-filter me-1"></i>
+                                Filter
+                            </div>
+                            <div class="card-body">
+                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Route</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByRoute">
+                                            <option selected value="all">All</option>
+                                            <option value="none">No route</option>
+                                            {% for r in routes %}
+                                                <option value="{{r.id}}">{{r.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Customer Type</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByUserType">
+                                            <option selected value="all">All</option>
+                                            <option value="none">No Customer Type</option>
+                                            {% for ut in user_types %}
+                                                <option value="{{ut.id}}">{{ut.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Status</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByStatus">
+                                            <option selected value="all">All</option>
+                                            <option value="none">No Status</option>
+                                            <option value="cleared">Cleared</option>
+                                            <option value="not cleared">Not Cleared</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Bill Notification</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByBillNotification">
+                                            <option selected value="all">All</option>
+                                            <option value="sent">Sent</option>
+                                            <option value="not sent">Not Sent</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Bill Paid</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByBillPaid">
+                                            <option selected value="all">All</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="not paid">Not Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        
+                        </div>
+
+                        <div class="card mb-4">
+
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Table
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="table-responsive-sm">
+                                    <table id="datatablesSimple" class="table table-striped table-bordered table-responsive" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th>Mobile</th>
+                                                <th>Balance {{before2month}}</th>
+                                                <th>Payment {{before1month}}</th>
+                                                <th>Purchase {{before1month}}</th>
+                                                <th>Balance {{before1month}}</th>
+                                                <th>Payment {{thismonth}}</th>
+                                                <th>Updated Balance {{before1month}}</th>
+                                                <th>Balance Today</th>
+                                                <th>Send Bill</th>
+                                                <th>Send Reminder</th>
+                                                <th>Send Prepaid Link</th>
+                                                <th>Bill Send Date</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </main>
+
+
+                <!-- Footer -->
+                {% include 'admin/components/footer.html' %}
+
+
+            </div>
+
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'admin/js/scripts.js' %}"></script>
+        <!-- jQuery Library -->
+        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
+        
+        <script>
+
+            window.addEventListener('DOMContentLoaded', event => {
+                    var dataTable = $('#datatablesSimple').DataTable({
+                        'responsive': true,
+                        'processing': true,
+                        'serverSide': true,
+                        'serverMethod': 'post',
+                        'ajax': {
+                            'url':'{% url "admin_datatable_ajax_customers_followup" %}',
+                            'data': function(data){
+                                // Read values
+                                var route = $('#filterByRoute').val();
+                                var type = $('#filterByUserType').val();
+                                var status = $('#filterByStatus').val();
+                                var bill = $('#filterByBillNotification').val();
+                                var paid = $('#filterByBillPaid').val();
+
+                                // Append to data
+                                data.filterByRoute = route;
+                                data.filterByUserType = type;
+                                data.filterByStatus = status;
+                                data.filterByBillNotification = bill;
+                                data.filterByBillPaid = paid;
+                            }
+
+                        },
+                        'fnRowCallback': function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                            if(parseInt(aData.balance2Updated) >= 0){
+                                console.log(true);
+                                $('td', nRow).css({'background':'#e6ffe8'});
+                            }
+                        },
+                        'columns': [
+                                { data: 'id', width: '100%' },
+                                { data: 'name', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                        var url_mask = "{% url 'admin_customers_transactions' 12345 %}".replace(/12345/, oData.id);
+                                        $(nTd).html("<a target='_blank' style='text-decoration:none;color:#00208c' href='"+ url_mask +"'>"+sData+"</a>");
+                                    } 
+                                },
+                                { data: 'mobile' },
+                                { data: 'balance3' },
+                                { data: 'payment2' },
+                                { data: 'purchase2' },
+                                { data: 'balance2' },
+                                { data: 'payment1' },
+                                { data: 'balance2Updated'},
+                                { data: 'balance1' },
+                                { data: 'name', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                        $(nTd).html("<a target='_blank' style='text-decoration:none;color:#00208c' href='/send/bill?uid="+ oData.id +"'>Send</a>");
+                                    } 
+                                },
+                                { data: 'name', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                        $(nTd).html("<a target='_blank' style='text-decoration:none;color:#00208c' href='/send/reminder?uid="+ oData.id +"'>Send</a>");
+                                    } 
+                                },
+                                { data: 'name', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                        $(nTd).html("<a target='_blank' style='text-decoration:none;color:#00208c' href='/send/prepaid-link?uid="+ oData.id +"'>Send</a>");
+                                    } 
+                                },
+                                { data: 'bill_send_date' },
+                            ]
+                    });
+
+                    $('#filterByRoute').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByUserType').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByStatus').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByBillNotification').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByBillPaid').change(function(){
+                        dataTable.draw();
+                    });
+            });
+
+            $('#datatablesSimple').wrap("<div class='scrolledTable'></div>");
+        </script>
+    </body>
+</html>

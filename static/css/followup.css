@@ -1,0 +1,177 @@
+body{
+    font-family:Caros;
+    padding:0;
+    margin:0;
+}
+.container{
+    margin:2rem;
+    border: 1px solid lightgray;
+    border-radius:10px;
+    overflow-x:scroll;
+}
+
+.container .body{
+    width:fit-content;
+}
+
+.reports, .mreports{
+    border: 1px solid lightgray;
+    border-radius:10px;
+}
+.body .each{
+    padding:.8rem 1rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom: 1px solid lightgray;
+}
+.report .each, .mreport .each{
+    padding:.8rem 1rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom: 1px solid lightgray;
+}
+.body .each p:nth-of-type(2), .body .each p:nth-of-type(3), .body .each p:nth-of-type(4), .body .each p:nth-of-type(5), .body .each p:nth-of-type(6), .body .each p:nth-of-type(7){
+    width:250px;
+    text-align:center;
+}
+.body .each p:nth-of-type(1){
+    flex:300px;
+}
+.body .each.title{
+    font-weight:700;
+}
+
+.body .each.paid{
+    background:#d4fffe;
+}
+
+.body .each.extra{
+    background:#6effdd;
+}
+
+.body .each.due{
+    background:#f8ffbd;
+}
+
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('../img/loading.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:2rem 2rem 0 2rem;
+}
+
+select, input, textarea{
+    padding:.6rem 1rem;
+    background: #eee;
+    border:1px solid lightgray;
+    outline-width:0;
+    border-radius:5px;
+    font-size:1rem !important;
+    width:9rem;
+}
+
+.s1 input{
+    margin:1rem;
+}
+
+.viewreport{
+    margin:0 2rem 2rem 2rem;
+    color:#04572a;
+    cursor:pointer;
+    width:fit-content;
+}
+
+.reports, .mreports{
+    margin:2rem;
+}
+
+nav{
+    box-shadow:0px 2px 5px rgba(0,0,0,0.2);
+    margin:0;
+}
+
+nav ul{
+    display:flex;
+    align-items:center;
+    padding:0;
+    margin:0;
+}
+
+nav ul li{
+    list-style-type:none;
+    padding:1rem;
+    cursor:pointer;
+}
+
+nav ul li.active{
+    color:#04572a;
+    border-bottom:2px solid #04572a;
+}
+
+p.call span{
+    font-size:1.3rem; 
+    cursor:pointer;
+    color:#04572a;
+}
+
+@media(max-width:1000px){
+    .body .each p:nth-of-type(2), .body .each p:nth-of-type(3), .body .each p:nth-of-type(4), .body .each p:nth-of-type(5),  .body .each p:nth-of-type(6){
+        min-width:12rem;
+        text-align:center;
+    }
+    .body .each p:nth-of-type(1){
+        min-width:20rem;
+    }
+    .s2 .body .each p:nth-of-type(1){
+        min-width:auto;
+    }
+    .container{
+        overflow:scroll;
+    }
+    .body .each{
+        width:fit-content;
+    }
+    .s2 .body .each{
+        width:100%;
+    }
+    .container{
+        margin:1rem;
+    }
+    .top{
+        margin:1rem 1rem 0 1rem;
+    }
+    .viewreport{
+        margin:0 1rem 1rem 1rem;
+    }
+    .reports{
+        margin:1rem;
+    }
+}

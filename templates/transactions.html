@@ -1,0 +1,62 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Transactions of user{% endblock %}
+
+{% block content %}
+
+
+    <table id="result_list" style="width:100%"> 
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+
+                {% if t.get_transaction_type == 'payment' %}
+
+                    <tr style="background: rgb(185, 255, 185);">
+                        <td>{{ t.date|date:"M d, Y" }}</td>
+                        <td>{{t.get_transaction_type}}</td>
+                        <td>{{t.amount}}</td>
+                        <td>{{t.balance}}</td>
+                    </tr>
+
+                {% elif t.get_transaction_type == 'refund' %}
+
+                    <tr style="background: rgb(255, 218, 208);">
+                        <td>{{ t.date|date:"M d, Y" }}</td>
+                        <td>{{t.get_transaction_type}}</td>
+                        <td>{{t.amount}}</td>
+                        <td>{{t.balance}}</td>
+                    </tr>
+
+                {% elif t.get_transaction_type == 'extra' %}
+
+                    <tr style="background: rgb(215, 255, 253);">
+                        <td>{{ t.date|date:"M d, Y" }}</td>
+                        <td>{{t.get_transaction_type}}</td>
+                        <td>{{t.amount}}</td>
+                        <td>{{t.balance}}</td>
+                    </tr>
+
+                {% else %}
+                    
+                    <tr>
+                        <td>{{ t.date|date:"M d, Y" }}</td>
+                        <td>{{t.get_transaction_type}}</td>
+                        <td>{{t.amount}}</td>
+                        <td>{{t.balance}}</td>
+                    </tr>
+
+                {% endif %}
+    
+            {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}

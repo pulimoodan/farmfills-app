@@ -1,0 +1,26 @@
+# copy this file and paste it in the server
+# crontab -e
+
+# activate file of your virtual environment
+VIRTUAL_ENV=/home/fenv/bin/activate
+
+# manage.py file of your django app
+MANAGE_FILE=/home/farmfills/manage.py
+
+# transaction log file
+T_LOG=/home/log.txt
+
+# sms log file
+SMS_LOG=/home/sms_log.txt
+
+# delivery data log file
+D_LOG=/home/delivery_log.txt
+
+TZ="Asia/Kolkata"
+MAILTO=""
+SHELL=/bin/bash
+
+# m h  dom mon dow   command
+  0 9  *   *   * source $VIRTUAL_ENV && python3 $MANAGE_FILE today_transaction >> $T_LOG
+  5 9  *   *   * source $VIRTUAL_ENV && python3 $MANAGE_FILE send_balance_reminder >> $SMS_LOG
+  0 2  *   *   * source $VIRTUAL_ENV && python3 $MANAGE_FILE generate_delivery_data >> $D_LOG

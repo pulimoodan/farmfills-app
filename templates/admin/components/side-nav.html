@@ -1,0 +1,188 @@
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Core</div>
+                <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Dashboard
+                </a>
+
+
+                <!-- Manage -->
+                <div class="sb-sidenav-menu-heading">Manage</div>
+
+                <!-- Customers -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCustomers" aria-expanded="false" aria-controls="collapseCustomers">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Customers
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseCustomers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_customers_list' %}">List</a>
+                        <a class="nav-link" href="{% url 'admin_customers_followup' %}">Follow up</a>
+                        <a class="nav-link" href="{% url 'admin_customers_create' %}">Create</a>
+                    </nav>
+                </div>
+
+                <!-- Schedule -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
+                    <div class="sb-nav-link-icon"><i class="fas fa-highlighter"></i></div>
+                    Schedule
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseSchedule" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_customers_subscriptions' %}">Subscription</a>
+                        <a class="nav-link" href="{% url 'admin_customers_extraless' %}">Custom Delivery</a>
+                        <a class="nav-link" href="{% url 'admin_customers_vacations' %}">Vacation</a>
+                    </nav>
+                </div>
+
+
+                <!-- Transactions -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTransactions" aria-expanded="false" aria-controls="collapseTransactions">
+                    <div class="sb-nav-link-icon"><i class="fas fa-rupee-sign"></i></div>
+                    Transactions
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseTransactions" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_customers_purchases' %}">Purchases</a>
+                        <a class="nav-link" href="{% url 'admin_customers_payments' %}">Payments</a>
+                        <a class="nav-link" href="{% url 'admin_customers_refunds' %}">Refunds</a>
+                        <a class="nav-link" href="{% url 'admin_customers_extras' %}">Extras</a>
+                    </nav>
+                </div>
+
+
+                <!-- Followup -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFollowup" aria-expanded="false" aria-controls="collapseFollowup">
+                    <div class="sb-nav-link-icon"><i class="fas fa-phone-alt"></i></div>
+                    Followup
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseFollowup" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_followup' %}">List</a>
+                        <a class="nav-link" href="{% url 'admin_add_followup_customer' %}">Add Customer</a>
+                        <a class="nav-link" href="{% url 'followup_home' %}">See Follow up</a>
+                    </nav>
+                </div>
+
+                <!-- Announcement -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAnnouncement" aria-expanded="false" aria-controls="collapseAnnouncement">
+                    <div class="sb-nav-link-icon"><i class="fas fa-bullhorn"></i></div>
+                    Announcement
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseAnnouncement" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_message' %}">Message</a>
+                    </nav>
+                </div>
+
+
+                <!-- Delivery -->
+                <div class="sb-sidenav-menu-heading">Delivery</div>
+
+                <!-- Route -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRoute" aria-expanded="false" aria-controls="collapseRoute">
+                    <div class="sb-nav-link-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    Route
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseRoute" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_route_ordering' %}">Ordering & Assigning</a>
+                    </nav>
+                </div>
+                <!-- Staffs -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseStaff" aria-expanded="false" aria-controls="collapseStaff">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                    Staffs
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseStaff" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_staff_list' %}">List</a>
+                        <a class="nav-link" href="{% url 'admin_staffs_create' %}">Create</a>
+                        <a class="nav-link" href="{% url 'admin_manager_list' %}">Managers</a>
+                    </nav>
+                </div>
+
+                <!-- Report -->
+                <div class="sb-sidenav-menu-heading">Reports</div>
+
+                <!-- Payments -->
+                <a class="nav-link" href="{% url 'admin_payments_report' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-receipt"></i></div>
+                    Payments
+                </a>
+
+                <!-- <div class="sb-sidenav-menu-heading">Interface</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Layouts
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                        <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                    Pages
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                            Authentication
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="login.html">Login</a>
+                                <a class="nav-link" href="register.html">Register</a>
+                                <a class="nav-link" href="password.html">Forgot Password</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                            Error
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="401.html">401 Page</a>
+                                <a class="nav-link" href="404.html">404 Page</a>
+                                <a class="nav-link" href="500.html">500 Page</a>
+                            </nav>
+                        </div>
+                    </nav>
+                </div>
+                <div class="sb-sidenav-menu-heading">Addons</div>
+                <a class="nav-link" href="charts.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                    Charts
+                </a>
+                <a class="nav-link" href="tables.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Tables
+                </a> -->
+
+
+                
+
+
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{ user.name }}
+        </div>
+    </nav>
+</div>

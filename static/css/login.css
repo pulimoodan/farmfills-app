@@ -1,0 +1,484 @@
+body::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  input, input:before, input:after {
+    -webkit-user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
+   } 
+  
+  
+  body, *{
+    padding: 0;
+    margin: 0;
+    font-family: Caros;
+    color: #777777;
+  }
+  
+  body{
+    font-size: 20px;
+  }
+  
+  .content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    min-height: 50vh;
+    width:100%;
+  }
+  
+  .login{
+    min-width:21vw;
+    border-radius: 10px;
+    box-shadow: 0px 0px 30px rgba(0,0,0,0.15);
+    padding: 3rem;
+    min-height: 30vh;
+  }
+  
+  .login label{
+    width: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+    color:#04572a;
+  }
+  
+  .inputs .input{
+    display: flex;
+  }
+  
+  .inputs .input input{
+    border: none;
+    padding:1rem 2rem;
+    font-size: .9rem;
+    background: #eeeeee;
+    margin: 1.1rem 0;
+    border-radius: 7px;
+    font-weight: 300;
+    margin-top:2rem;
+  }
+  
+  .inputs .input input:nth-of-type(1){
+    max-width: 3rem;
+    margin-right:-1rem;
+    padding-right: 0;
+  }
+  
+  input:focus, textarea:focus, select:focus{
+    outline: none;
+  }
+  
+  .login .buttons{
+    display: flex;
+    justify-content: flex-start;
+    
+  }
+  
+  .login p{
+    font-size: .8rem;
+    font-weight: 200;
+    text-align: center;
+    margin-top:4rem;
+  }
+  
+  .login.otp p{
+    font-size: .8rem;
+    font-weight: 200;
+    text-align: center;
+    margin-top:0;
+  }
+  
+  .login .inputs p{
+    font-size: .8rem;
+    font-weight: 400;
+    text-align: left;
+    font-weight: 200;
+    margin-top: .5rem;
+  }
+  
+  .login .buttons button{
+    border: 1px solid #04572a;
+    padding: .5rem 1rem;
+    border-radius: 7px;
+    margin-right:1rem;
+    color: #04572a;
+    background: #fff;
+    transition: .3s;
+    cursor: pointer;
+  }
+  
+  .login .buttons button:nth-of-type(1){
+    color: #fff;
+    background: #04572a;
+  }
+  
+  .login .buttons button:nth-of-type(1):hover{
+    color: #04572a;
+    background: #fff;
+  }
+  
+  .login .buttons button:nth-of-type(2):hover{
+    color: #fff;
+    background:#04572a;
+  }
+  
+  
+  .login p a{
+    color: #04572a;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .login p a:hover{
+    color: #04572a;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  
+  #digit-1, #digit-2, #digit-3, #digit-4{
+    border: none;
+    padding:1rem 1rem;
+    font-size: .9rem;
+    background: #eeeeee;
+    margin: 1.1rem 0;
+    border-radius: 7px;
+    font-weight: 300;
+    margin-top:2rem;
+    width:1.5rem;
+    text-align: center;
+  }
+  
+  .otp .inputs .input{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .home{
+    width: 100%;
+    margin: 0 10rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 30px rgba(0,0,0,0.15);
+    min-height: 65vh;
+    background: #fff;
+    margin-top: -1rem; 
+  }
+  
+  .otp .time{
+    font-weight: 300;
+    text-align: center;
+    margin:1rem 0;
+    margin-top: 2rem;
+  }
+  
+  .nav ul{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+  }
+
+  .nav ul a{
+    text-decoration: none;
+    display: inline;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav ul li{
+    list-style-type: none;
+    display: block;
+    text-align: center;
+    font-size: 1rem;
+    padding: 1.5rem .3rem 1rem .3rem;
+    opacity: .5;
+    cursor: pointer;
+  }
+  
+  .nav ul li:hover{
+    opacity: .7;
+  }
+  
+  .nav ul li.active{
+    opacity: 1;
+    border-bottom: 2px solid #04572a;
+    color: #04572a;
+  }
+
+  .nav ul li.active a{
+    color: #04572a;
+  }
+  
+  .nav ul li.active span{
+    color: #04572a;
+  }
+  
+  .nav ul li:nth-of-type(1){
+    margin-left: 3rem;
+  }
+  
+  .nav ul li:nth-last-child(1){
+    margin-right: 3rem;
+  }
+  
+  .nav ul li span{
+    margin-right: .5rem;
+  }
+  
+  .nothing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+  }
+  
+  #readysoon, #readysoon-desktop{
+    height:15rem;
+  }
+  
+  #readysoon{
+    display: none;
+  }
+  
+  .bill{
+    padding: 2rem 3.3rem;
+  }
+  
+  .sort{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 0;
+  }
+  
+  .sort select{
+    padding: .5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    background: none;
+    border: 1px solid #04572a;
+    margin-right: 1rem;
+    font-weight: 300;
+    color: #04572a;
+  }
+  
+  .billsec, .payment, .purchase{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-radius: 5px;
+    background: #eee;
+    margin-bottom: 1rem;
+    box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+  }
+  
+  .billsec p, .payment p, .purchase p{
+    font-weight: 300;
+    font-size: .9rem;
+    margin:0;
+  }
+  
+  .purchase p{
+    width:30%;
+  }
+  
+  .purchase p:nth-of-type(2){
+    text-align: center;
+  }
+  
+  .purchase p:nth-of-type(3){
+    text-align: right;
+  }
+  
+  .payment .description{
+    font-size: .8rem;
+  }
+  
+  .billsec p span{
+    margin-left: 1rem;
+    margin-top:-1rem;
+    font-size: 1.2rem;
+  }
+  
+  .more{
+    margin-bottom: 1rem;
+  
+  }
+  
+  .more.m0{
+    display: block;
+  }
+  
+  .more .row{
+    display: flex;
+    font-size: .8rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  
+  .more h3{
+    font-weight: 400;
+    font-size: .9rem;
+    padding: .3rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: .3rem;
+  }
+  
+  .more h3:nth-of-type(2){
+    margin-top: .8rem;
+  }
+  
+  .more .row p{
+    width:25%;
+    font-size: .9rem;
+    padding: .3rem 1rem;
+  }
+  
+  .more .row.start p:nth-of-type(1){
+    width:10%;
+    text-align: right;
+  }
+  
+  .more .row.start p:nth-of-type(2){
+    width:90%;
+    text-align: right;
+  }
+  
+  
+  .more .row p:nth-of-type(2){
+    width:40%;
+    font-size: .9rem;
+    padding: .3rem 1rem;
+  }
+  
+  .more .row p:nth-of-type(2){
+    text-align: center;
+  }
+  
+  .more .row p:nth-of-type(3){
+    text-align: right;
+  }
+  
+  .total{
+    border-top:1px solid rgba(0,0,0,0.2);
+    margin-top: .3rem;
+  }
+  
+  
+  .total p{
+    font-weight: 500;
+  }
+  
+  .row.start{
+    margin-top: 1rem;
+  }
+  
+  .paybr{
+    display: none;
+  }
+  
+  @media(max-width:850px){
+    .login{
+      max-width:none;
+    }
+  
+    #readysoon{
+      display: block;
+    }
+  
+    #readysoon-desktop{
+      display: none;
+    }
+  }
+
+  @media(max-width:900px){
+    body{
+      font-size: 15px;
+    }
+  
+    .content{
+      padding-bottom: 2rem;
+      min-height: 45vh;
+    }
+  
+    .login{
+      min-width:80vw;
+      padding: 1.5rem;
+    }
+  
+    .home{
+      margin: 0 1rem;
+      width: calc(100vw - 2rem);
+      min-height: 53vh;
+    }
+  
+    .nav{
+      overflow-x: scroll;
+    }
+  
+    .nav ul{
+      width: 120vw;
+    }
+  
+    .nav::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .nav {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  
+    .nav ul li:nth-of-type(1){
+      margin-left: 1.5rem;
+    }
+    
+    .nav ul li:nth-last-child(1){
+      margin-right: 1.5rem;
+    }
+  
+    .bill{
+      padding: 1rem;
+    }
+  
+    .paybr{
+      display: block;
+    }
+  
+    .plan h2 .pay{
+      margin-left: 0;
+    }
+  
+    .head .right span{
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media(max-width:550px){
+  
+    .nav ul{
+      width: 200vw;
+    }
+  }
+  
+  
+  @media(max-width:400px){
+  
+    .nav ul{
+      width: 210vw;
+    }
+  }
+  

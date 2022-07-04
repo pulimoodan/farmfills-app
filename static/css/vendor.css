@@ -1,0 +1,152 @@
+body{
+    font-family:Caros;
+    padding:0;
+    margin:0;
+}
+.container{
+    margin:2rem;
+    border: 1px solid lightgray;
+    border-radius:10px;
+    overflow:hidden;
+}
+.reports, .mreports{
+    border: 1px solid lightgray;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.main .body, .reports .body{
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height:40vh;
+    overflow:hidden;
+    padding:1rem;
+}
+
+.main .body h1, .reports .body h1{
+    font-weight: 400;
+    font-size: 50px;
+    margin:0;
+}
+
+.main .body h2, .reports .body h2{
+    font-weight: 400;
+    font-size: 25px;
+    margin:0;
+}
+
+.body p{
+    font-weight: 300;
+    color: red;
+    font-size:.9rem;
+    text-align:center;
+}
+
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('../img/loading.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+select, input{
+    padding:.6rem 1rem;
+    background: #eee;
+    border:1px solid lightgray;
+    outline-width:0;
+    border-radius:5px;
+    font-size:1rem;
+}
+
+.reports input, .mreports input{
+    margin:1rem;
+}
+
+.reports, .mreports{
+    margin:2rem;
+}
+
+nav{
+    box-shadow:0px 2px 5px rgba(0,0,0,0.2);
+    margin:0;
+}
+
+nav ul{
+    display:flex;
+    align-items:center;
+    padding:0;
+    margin:0;
+}
+
+nav ul li{
+    list-style-type:none;
+    padding:1rem;
+    cursor:pointer;
+}
+
+nav ul li.active{
+    color:#04572a;
+    border-bottom:2px solid #04572a;
+}
+
+nav ul li.active a{
+    color:#04572a;
+}
+
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
+@media(max-width:1000px){
+    .main .each.title.fixed{
+        width:auto;
+        padding:.7rem 2rem;
+    }
+    .body .each p{
+        min-width:9rem;
+    }
+    .body .each p:nth-of-type(1){
+        min-width:20rem;
+    }
+    .container{
+        overflow:scroll;
+    }
+    .body .each{
+        width:fit-content;
+    }
+    .container{
+        margin:1rem;
+    }
+    .top{
+        margin:1rem 1rem 0 1rem;
+    }
+    .viewreport{
+        margin:0 1rem 1rem 1rem;
+    }
+    .reports{
+        margin:1rem;
+    }
+}

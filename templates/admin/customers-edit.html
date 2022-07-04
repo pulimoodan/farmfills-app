@@ -1,0 +1,177 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Edit Customer - Farmfills Admin</title>
+        <link href="{% static 'admin/css/styles.css' %}" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        
+        
+        <!-- Top Nav Bar -->
+        {% include 'admin/components/top-nav.html' %}
+
+        <div id="layoutSidenav">
+
+
+            <!-- Side Nav bar -->
+            {% include 'admin/components/side-nav.html' %}
+
+
+            <!-- Main Area  -->
+            <div id="layoutSidenav_content">
+                
+                <!-- Main Content Goes here -->
+                <main>
+                    <div class="container-fluid px-4">
+
+                        <h1 class="mt-4">Edit Customer</h1>
+                        
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="{% url 'admin_customers_list' %}" style='text-decoration:none;color:#00208c'>Customers</a></li>
+                            <li class="breadcrumb-item active">User {{ customer.id }}</li>
+                        </ol>
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if success %}
+                            <div class="alert alert-success">
+                                Saved Successfully
+                            </div>
+                        {% endif %}
+
+                        <div class="card mb-4">
+
+                            <div class="card-header">
+                                <i class="fas fa-user me-1"></i>
+                                {{ customer.delivery_name }}
+                            </div>
+
+                            <div class="card-body">
+
+                                <form method="post" class="row g-3">
+                                    {% csrf_token %}
+
+                                    <div class="col-md-6">
+                                        <label for="inputEmail4" class="form-label">Name</label>
+                                        {% render_field form.name class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">Delivery Name</label>
+                                        {% render_field form.delivery_name class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputEmail4" class="form-label">Mobile</label>
+                                        {% render_field form.mobile class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">Email</label>
+                                        {% render_field form.email class="form-control" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputPassword4" class="form-label">Route</label>
+                                        {% render_field form.route class="form-select" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputPassword4" class="form-label">Customer Type</label>
+                                        {% render_field form.user_type class="form-select" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputPassword4" class="form-label">Address Type</label>
+                                        {% render_field form.address_type class="form-select" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">House Name</label>
+                                        {% render_field form.house_name class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">House No</label>
+                                        {% render_field form.house_no class="form-control" %}
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputAddress" class="form-label">Street</label>
+                                      {% render_field form.street class="form-control" %}
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputAddress" class="form-label">Landmark</label>
+                                      {% render_field form.landmark class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label for="inputPassword4" class="form-label">Apartment Name</label>
+                                      {% render_field form.apartment_name class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">Tower ( if exists )</label>
+                                        {% render_field form.tower class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label for="inputPassword4" class="form-label">Floor</label>
+                                      {% render_field form.floor class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPassword4" class="form-label">Door</label>
+                                        {% render_field form.door class="form-control" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputPassword4" class="form-label">Route Order</label>
+                                        {% render_field form.route_order class="form-control" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label for="inputPassword4" class="form-label">Payment Mode</label>
+                                      {% render_field form.payment_mode class="form-select" %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputPassword4" class="form-label">Status</label>
+                                        {% render_field form.status class="form-select" %}
+                                    </div>
+
+                                    <div class="col-12">
+                                      <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                                
+                            </div>
+
+                        </div>
+
+                    </div>
+                </main>
+
+
+                <!-- Footer -->
+                {% include 'admin/components/footer.html' %}
+
+
+            </div>
+
+
+        </div>
+        
+        <script src="{% static 'admin/js/scripts.js' %}"></script>
+        <!-- jQuery Library -->
+        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+
+    </body>
+</html>

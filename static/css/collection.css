@@ -1,0 +1,210 @@
+body{
+    font-family:Caros;
+    padding:0;
+    margin:0;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+    .container{
+        margin:2rem;
+        border: 1px solid lightgray;
+        border-radius:10px;
+        overflow:hidden;
+    }
+    .reports, .mreports{
+        border: 1px solid lightgray;
+        border-radius:10px;
+        overflow:hidden;
+    }
+
+    .body .each.empty{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .body .each{
+        padding:.8rem 1rem;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-bottom: 1px solid lightgray;
+    }
+    .report .each, .mreport .each{
+        padding:.8rem 1rem;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-bottom: 1px solid lightgray;
+    }
+    .body .each p{
+        width:20%;
+        text-align:center;
+    }
+    .body .each p:nth-of-type(1){
+        text-align:left;
+        flex:50%;
+    }
+    .body .each.title{
+        font-weight:700;
+    }
+
+    .body .each.paid{
+        background:#d4fffe;
+    }
+
+    .body .each.extra{
+        background:#6effdd;
+    }
+
+    .body .each.due{
+        background:#f8ffbd;
+    }
+
+    .main .body{
+        position:relative;
+    }
+
+    .main .each.title.fixed{
+        overflow: hidden;
+        width:calc(100% - 6rem);
+        left:0;
+        padding:.7rem 3rem;
+        position:fixed;
+        top:0;
+        background:#fff;
+        border-right:1px solid lightgray;
+        box-shadow:0px 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        top:        0;
+        left:       0;
+        height:     100%;
+        width:      100%;
+        background: rgba( 255, 255, 255, .8 ) 
+                    url('../img/loading.gif') 
+                    50% 50% 
+                    no-repeat;
+    }
+
+    /* When the body has the loading class, we turn
+    the scrollbar off with overflow:hidden */
+    body.loading .modal {
+        overflow: hidden;   
+    }
+
+    /* Anytime the body has the loading class, our
+    modal element will be visible */
+    body.loading .modal {
+        display: block;
+    }
+
+    .top{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:2rem 2rem 0 2rem;
+    }
+
+    select, input, textarea{
+        padding:.6rem 1rem;
+        background: #eee;
+        border:1px solid lightgray;
+        outline-width:0;
+        border-radius:5px;
+        font-size:1rem;
+    }
+
+    .reports input, .mreports input{
+        margin:1rem;
+    }
+
+    .viewreport{
+        margin:0 2rem 2rem 2rem;
+        color:#04572a;
+        cursor:pointer;
+        width:fit-content;
+    }
+
+    .reports, .mreports{
+        margin:2rem;
+    }
+
+    nav{
+        box-shadow:0px 2px 5px rgba(0,0,0,0.2);
+        margin:0;
+    }
+
+    nav ul{
+        display:flex;
+        align-items:center;
+        padding:0;
+        margin:0;
+    }
+
+    nav ul li{
+        list-style-type:none;
+        padding:1rem;
+        cursor:pointer;
+    }
+
+    nav ul li.active{
+        color:#04572a;
+        border-bottom:2px solid #04572a;
+    }
+
+.collected-amount{
+    color: #04572a;
+}
+
+    @media(max-width:1000px){
+        .main .each.title.fixed{
+            width:auto;
+            padding:.7rem 2rem;
+        }
+        .body .each p{
+            min-width:9rem;
+        }
+        .body .each p:nth-of-type(1){
+            min-width:20rem;
+        }
+        .container{
+            overflow:scroll;
+        }
+        .body .each{
+            width:fit-content;
+        }
+        .container{
+            margin:1rem;
+        }
+        .top{
+            margin:1rem 1rem 0 1rem;
+        }
+        .viewreport{
+            margin:0 1rem 1rem 1rem;
+        }
+        .reports{
+            margin:1rem;
+        }
+        nav{
+            overflow-x:scroll;
+        }
+        nav ul li{
+            width:fit-content;
+            white-space: nowrap;
+        }
+        .header{
+            flex-direction:column;
+        }
+        .create label, .create input[type='button']{
+            display:block;
+            margin:1rem 0 !important;
+        }
+    }

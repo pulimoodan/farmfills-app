@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Farmfills</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}" />
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/96b854ece5.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.cdnfonts.com/css/caros" rel="stylesheet">
+</head>
+<body>
+    <div class="head">
+        <img src="{% static 'img/logo.png' %}" alt=""/>
+        <div class="right">
+            <div class="social">
+                <a href=""><img src="{% static 'img/facebook-green.png' %}" alt=""/></a>
+                <a href=""><img src="{% static 'img/instagram-green.png' %}" alt=""/></a>
+                <a href=""><img src="{% static 'img/youtube-green.png' %}" alt=""/></a>
+            </div>
+            <div class="button" id="target" onclick="window.location.href='https://farmfills.com'" style="cursor: pointer;">
+                <img src="{% static 'img/login.png' %}" alt=""/>
+                <p>Home</p>
+            </div>
+        </div>
+        <div class="right profile-btn" style="display:none">
+            <span class="far fa-bell"></span>
+            <span class="fas fa-sign-out-alt" onclick="logout()"></span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <form id="registration_form" method="post">
+            {% csrf_token %}
+
+            <div class="login name">
+                <div class="inputs">
+                    <label>Your Good Name</label>
+                    {% if error == 1 %}
+                        <p style="color:red">Registration failed! Please try again</p>
+                    {% else %}
+                        <p>Enter your full name</p>
+                    {% endif %}
+                    <div class="input" style="display:flex; justify-content:center; align-items:center;margin-top:1rem;">
+                        <input type="text" name="name" id="name" style="width:100% !important;max-width:none;margin-top:1rem;margin-right:0;" placeholder="" />
+                    </div>
+                    <div class="buttons">
+                        <button type="button" onclick="next(this)">Next</button> <button onclick="window.location.href='https://farmfills.com'">Back</button>
+                    </div>
+                </div>
+                <p>Already have an account? <a href='/login'>Login</a></p>
+            </div>
+
+            <div class="login mobile startDate" style="display: none;">
+                <div class="inputs">
+                <label>When Do You Want to Start ?</label>
+                <p>₹ 60 / ltr (Packaging type : plastic pouch)</p>
+                <div class="input" style="display:flex; justify-content:center; align-items:center;margin-top:1rem;">
+                    <input type="text" name="start_date" id="startDate" style="width:100% !important;max-width:none;margin-top:1rem;margin-right:0;" placeholder="Select Date" readonly><span class="fas fa-calendar-alt" style="position:relative;left:-2rem;"></span>
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="next(this)">Next</button> <button type="button" onclick="back(this)">Back</button>
+                </div>
+                </div>
+                <p>Already have an account? <a href='/login'>Login</a></p>
+            </div>
+
+            <div class="login mobile type"  style="display: none;">
+                <div class="inputs">
+                <label>How Often Do You Want ?</label>
+                <p>Select type of your subscription</p>
+                <div class="input" style="display:flex; flex-direction:column; justify-content:center; align-items:center;margin-top:1rem;">
+                    <select name="sub_type" id="createtype" onchange="typeDropdown(this.value)">
+                        <option value="daily" selected>Daily</option>
+                        <option value="alternate">Alternate</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="custom">Custom Interval</option>
+                    </select>
+                    <div id="custom" class="inputsec" style="display: none;">
+                        <label for="" style="display:inline-block; margin-top:2rem;">Select Quantity</label>
+                        
+                        <div class="custom" style="display:flex; flex-wrap:wrap; align-items:center;">
+                            <input type="number" name="custom_quatity" value="0.5" data-decimals="1" min="0.5" max="5" step="0.5" data-suffix="ltr" id="createquantity"/>
+                            <label for="" style="margin:0 1rem;margin-top:1rem;">in every</label>
+                            <input type="number" name="custom_interval" value="3" min="3" max="15" step="1" data-suffix="days" id="createinterval"/>
+                        </div>
+                    </div>
+                    <div id="daily" class="inputsec">
+                        <div class="different" style="display:inline-block; margin-top:2rem;margin-bottom:0">
+                            <input type="checkbox" value="true" name="daily_different_alternative" id="dquantity" style="margin-right:1rem;" onchange="showDay2(this)"><label for="">Different quantity in alternative days</label>
+                        </div>
+                        <div class="custom" style="display:flex; flex-wrap:wrap; align-items:center;">
+                            <div class="day1" style="margin-right:2rem;">
+                                <label for="" style="display:inline-block; margin-top:1rem;">Select Quantity</label>
+                                <input type="number" name="daily_day1" value="0.5" data-decimals="1" min="0.5" max="5" step="0.5" data-suffix="ltr" id="createday1"/>
+                            </div>
+                            <div class="day2" style="display:none;">
+                                <label for="" style="display:inline-block; margin-top:1rem;">Day 2</label>
+                                <input type="number" name="daily_day2" value="0.5" data-decimals="1" min="0.5" max="5" step="0.5" data-suffix="ltr" id="createday2"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="alternate" class="inputsec" style="display: none;">
+                        <label for="" style="display:inline-block; margin-top:2rem;">Enter Quantity</label>
+                        <input type="number" name="alternate_quantity" value="0.5" data-decimals="1" min="0.5" max="5" step="0.5" data-suffix="ltr" id="createalternate"/>
+                    </div>
+                    <div id="weekly" class="inputsec" style="display: none;">
+                        <label for="" style="display:inline-block; margin-top:2rem;">Monday</label>
+                        <input type="number" name="weekly_mon" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createmon"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Tuesday</label>
+                        <input type="number" name="weekly_tue" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createtue"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Wednesday</label>
+                        <input type="number" name="weekly_wed" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createwed"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Thursday</label>
+                        <input type="number" name="weekly_thu" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createthu"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Friday</label>
+                        <input type="number" name="weekly_fri" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createfri"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Saturday</label>
+                        <input type="number" name="weekly_sat" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createsat"/>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Sunday</label>
+                        <input type="number" name="weekly_sun" value="0" data-decimals="1" min="0" max="5" step="0.5" data-suffix="ltr" id="createsun"/>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button type="button" onclick="next(this)">Next</button> <button type="button" onclick="back(this)">Back</button>
+                </div>
+                </div>
+                <p>Already have an account? <a href='/login'>Login</a></p>
+            </div>
+
+            <div class="login mobile address" style="display: none;">
+                <div class="inputs">
+                <label>Where Do You Stay ?</label>
+                <p>Enter your address details</p>
+                <div class="input" style="display:flex; flex-direction:column; justify-content:center; align-items:center;margin-top:1rem;">
+                    <div class="select_address_type"><div class="active" onclick="changeAddressType(1, this)">Apartment/Flat</div><div onclick="changeAddressType(2, this)">House/Villa</div></div>
+                    <select name="address_type" id="address_type" style="display: none;">
+                        <option value="house"></option>
+                        <option value="apartment" selected></option>
+                    </select>
+                    
+                    <!--house-->
+                    <div class="addresstype house" style="display:none;width:100%;">
+                        <label for="" style="display:inline-block; margin-top:2rem;">House/Villa Name <span style="color:red;"> * </span> </label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control" name="house_name" id="house_name" value="" /></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">House/Villa No. <span style="color:red;"> * </span></label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control" name="house_no" id="house_no" value="" /></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Street Address <span style="color:red;"> * </span> </label>
+                        <div style="display:flex;align-items:center"><textarea type="text" class="form-control" name="house_street" id="street"></textarea></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Land Mark</label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control optional" name="house_landmark" id="landmark" value="" /></div>
+                    </div>
+
+                    <div class="addresstype apartment" style="width:100%;">
+                        <label for="" style="display:inline-block; margin-top:2rem;">Apartment Name <span style="color:red;"> * </span></label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control" name="apartment_name" id="apartment_name" value="" /></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Tower (If multiple towers exist)</label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control optional" name="apartment_tower" id="tower" value="" /></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Floor No. <span style="color:red;"> * </span></label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control" name="apartment_floor" id="floor" value="" /></div>
+                        <label for="" style="display:inline-block; margin-top:2rem;">Door No. <span style="color:red;"> * </span></label>
+                        <div style="display:flex;align-items:center"><input type="text" class="form-control" name="apartment_door" id="door" value="" /></div>
+                    </div>
+                </div>
+
+                    <div class="buttons">
+                        <button type="button" onclick="next(this)">Next</button> <button type="button" onclick="back(this)">Back</button>
+                    </div>
+                </div>
+                <p>Already have an account? <a href='/login'>Login</a></p>
+            </div>
+
+            <div class="login mobile" style="display: none;">
+                <div class="inputs">
+                <label>Verify your mobile number</label>
+                <p id="sub_title">You will receive an otp on the mobile number</p>
+                <div class="input" style="width:100%;">
+                    <input type="text" disabled="disabled" value="+91" style="flex:.25;width:auto;" ></input><input type="text" name="mobile" placeholder="Enter mobile number" pattern="[0-9]*" inputmode="numeric" id="mobile" style="flex:.75;width:auto;" ></input>
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="getOTP(this)">Get OTP</button> <button type="button" onclick="back(this)">Back</button>
+                </div>
+                </div>
+                <p>Already have an account? <a href='/login'>Login</a></p>
+            </div>
+
+            <div class="login otp" style="display: none;">
+                <div class="inputs">
+                <label>Verify OTP</label>
+                <p id="subotp">Welcome back! Please login to your account.</p>
+                <div class="input digit-group">
+                    <input type="text" pattern="[0-9]*" inputmode="numeric" id="digit-1" name="digit-1" data-next="digit-2" />
+                    <input type="text" pattern="[0-9]*" inputmode="numeric" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
+                    <input type="text" pattern="[0-9]*" inputmode="numeric" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
+                    <input type="text" pattern="[0-9]*" inputmode="numeric" id="digit-4" name="digit-4" data-previous="digit-3" />
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="verifyOTP(this)">Verify OTP</button> <button type="button" onclick="back(this)">Cancel</button>
+                </div>
+                </div>
+                <h3 class="time">00:30</h3>
+                <p>Not received OTP? <a onclick="resendOTP()" style="color: #777;opacity:.5" id="resend">Resend</a></p>
+            </div>
+
+        </form>
+
+    </div>
+
+    <footer id="footer">
+        <div class="links">
+            <ul>
+                  <li><a href="">Know us more</a></li>
+                  <li><a href="">Contact</a></li>
+                  <li><a href="">FAQ</a></li>
+                  <li><a href="">Terms and Conditions</a></li>
+                  <li><a href="">Privacy Policy</a></li>
+                  <li><a href="">Refund Policy</a></li>
+                  <li><a href="">Feedbacks</a></li>
+            </ul>
+        </div>
+        <div class="claim">&copy; 2017-2021  &nbsp;&nbsp; All Rights Reserved</div>
+    </footer> 
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-input-spinner@1.17.0/src/bootstrap-input-spinner.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        //initializing datepickers
+        $( "#startDate" ).datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate:1
+        });
+
+        // input spinner in number fields
+        $("input[type='number']").inputSpinner();
+
+        //go to the next section
+        function next(elem){
+            valid = true;
+            $(elem).closest('.buttons').prev().find('input:visible:not(.optional)').each (function() {
+                if (this.value.length == 0) {
+                    valid = false;
+                }
+            });
+
+            if(valid){
+                $(elem).closest('.login').css({'display':'none'});
+                $(elem).closest('.login').next().css({'display':'block'});
+            }else{
+                $(elem).closest('.buttons').prev().prev().html('Please fill out the fields');
+                $(elem).closest('.buttons').prev().prev().css({'color':'red'});
+                window.scroll(0,findPos($(elem).closest('.buttons').prev().prev()));
+            }
+        }
+
+        // get vertical position of an element
+        function findPos(obj) {
+            var curtop = 0;
+            if (obj.offsetParent) {
+                do {
+                    curtop += obj.offsetTop;
+                } while (obj = obj.offsetParent);
+            return [curtop];
+            }
+        }
+
+        
+        // go back
+        function back(elem){
+            $(elem).closest('.login').css({'display':'none'});
+            $(elem).closest('.login').prev().css({'display':'block'});
+
+            $('#digit-1').val('');
+            $('#digit-2').val('');
+            $('#digit-3').val('');
+            $('#digit-4').val('');
+        }
+
+        // show alternate days
+        function showDay2(elem){
+            if(elem.checked){
+                $('.day2').css({'display':'block'});
+                $('.day1').find('label').html('Day 1');
+            }else{
+                $('.day1').find('label').html('Select Quantity');
+                $('.day2').css({'display':'none'});
+            }
+        }
+
+        // subscription type dropdown functionality
+        function typeDropdown(value){
+            $('.inputsec').css({'display':'none'});
+            $('#' + value).css({'display':'block'});
+        }
+
+        typeDropdown('daily');
+
+        // change address type
+        function changeAddressType(num, elem){
+            $(elem).addClass('active');
+            if(num == 1){
+                $(elem).next().removeClass('active');
+                $('.address .house').css({'display':'none'});
+                $('.address .apartment').css({'display':'block'});
+                $('#address_type').val('apartment');
+            }else{
+                $(elem).prev().removeClass('active');
+                $('.address .house').css({'display':'block'});
+                $('.address .apartment').css({'display':'none'});
+                $('#address_type').val('house');
+            }
+        }
+
+        //generate otp
+        function generateOTP() { 
+            var digits = '0123456789'; 
+            let OTP = ''; 
+            for (let i = 0; i < 4; i++ ) { 
+                OTP += digits[Math.floor(Math.random() * 10)]; 
+            } 
+            return OTP; 
+        }
+
+        //check if phone number is valid
+        function isphonenumber(inputtxt)
+        {
+            var phoneno = /^\d{10}$/;
+            if(inputtxt.match(phoneno)){
+                return true;
+                }
+                else
+                {
+                return false;
+                }
+        }
+
+        var otp, phone, time, timeInterval;
+
+        // get opt
+        function getOTP(elem){
+            phone = document.getElementById('mobile').value;
+            phone = phone.replace(/\s/g, "");
+            if(isphonenumber(phone)){
+
+                $.ajax({
+                    url: "{% url 'check_registered' %}",
+                    data: {
+                        'mobile': phone
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data.is_regitered == false) {
+                            sendOTP(phone, elem);
+                        }else {
+                            $('#sub_title').html('<span style="color:red;">The mobile number is already registered</span>');
+                        }
+
+                    }
+                });
+
+            }else{
+                $('#sub_title').html('<span style="color:red;">Invalid mobile number</span>');
+            }
+        }
+
+        // send otp
+        function sendOTP(phone, elem){
+            $.ajax({
+                url: "{% url 'send_otp' %}",
+                data: {
+                    'mobile': phone
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.success) {
+                        next(elem);
+                        $('#subotp').html('OTP sent to ' + phone);
+                        $('#digit-1').focus();
+                        time = 30;
+                        timeInterval = setInterval(startCount, 1000);
+                    }else {
+                        $('#sub_title').html('<span style="color:red;">An error occured</span>');
+                    }
+
+                }
+            });
+        }
+
+        // count resend timeout
+        function startCount(){
+            if(time > 0){
+                time --;
+                var timeVal = '00:' + ("0" + time).slice(-2);
+                $(".time").html(timeVal);
+            }else{
+                resendAvailable();
+            }
+        }
+
+        // resend is available
+        function resendAvailable(){
+            $('#resend').css({'color': '#045724', 'opacity' : '1'});
+        }
+
+        // resend otp
+        function resendOTP(){
+            if(time < 1){
+                $.ajax({
+                    url: "{% url 'send_otp' %}",
+                    data: {
+                        'mobile': phone
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data.success) {
+                            $('#resend').css({'color': '#777', 'opacity' : '.5'});
+                            time = 30;
+                            $('#subotp').html('A new OTP has been sent');
+                            $('#subotp').css({'color': '#2781e7'});
+                        }else {
+                            $('#subotp').html('<span style="color:red;">An error occured</span>');
+                        }
+
+                    }
+                });
+            }
+        }
+
+        // focus jump on otp field
+        $('.digit-group').find('input').each(function() {
+            $(this).attr('maxlength', 1);
+            $(this).on('keyup', function(e) {
+                var parent = $($(this).parent());
+                
+                if(e.keyCode === 8 || e.keyCode === 37) {
+                    var prev = parent.find('input#' + $(this).data('previous'));
+                    
+                    if(prev.length) {
+                        $(prev).select();
+                    }
+                } else if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
+                    var next = parent.find('input#' + $(this).data('next'));
+                    
+                    if(next.length) {
+                        $(next).select();
+                    } else {
+                        if(parent.data('autosubmit')) {
+                            parent.submit();
+                        }
+                    }
+                }
+            });
+        });
+
+        // verify otp
+        function verifyOTP(elem){
+            var otpInput = $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val();
+            
+            $.ajax({
+                url: "{% url 'verify_otp' %}",
+                data: {
+                    'mobile': phone,
+                    'otp': otpInput
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.verified) {
+                        $('#registration_form').submit();
+                    }else {
+                        $('#subotp').html("OTP verification failed");
+                        $('#subotp').css({'color': 'red'});
+                        $('#digit-1').val('');
+                        $('#digit-2').val('');
+                        $('#digit-3').val('');
+                        $('#digit-4').val('');
+                    }
+
+                }
+            });
+
+        }
+    </script>
+</body>
+</html>
