@@ -21,7 +21,7 @@ class Command(BaseCommand):
         data = []
         
         try:
-            date = datetime.strptime(options['date'], '%Y-%m-%d').replace(tzinfo=pytz.UTC)
+            date = datetime.strptime(options['date'], '%Y-%m-%d').replace(tzinfo=pytz.UTC).date()
 
             data.append(['Date: ', date.strftime('%d %b, %Y')])
             data.append(['------------', '------------'])

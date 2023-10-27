@@ -361,6 +361,7 @@ def history(request):
                         break
 
             for r in refunds:
+                r.date = timezone.localtime(r.date)
                 if r.date.date() == date:
                     historyList.append({'date':date.strftime("%b %d"), 'amount':str(r.amount), 'quantity':str(r.quantity), 'status':'refunded'})
                     added = True
@@ -785,7 +786,7 @@ def create_payment_order(request):
 
         email = user.email
 
-        order = rp.order.create({'amount': int(amount)*100, 'currency': 'INR', 'receipt': user.mobile, 'payment_capture':0})
+        order = rp.order.create({'amount': float(amount)*100, 'currency': 'INR', 'receipt': user.mobile, 'payment_capture':0})
 
         last_day = last_day_of_month(timezone.localtime(timezone.now()))
 
@@ -1051,7 +1052,7 @@ def bill(request):
         balance_date = timezone.localtime(timezone.now()).strftime("%b %d, %Y")
         
         if user.user_type.payment_type == 'postpaid':
-            if len(bill_data) > 1:
+            if len(bill_data) > 0:
                 balance = bill_data[0]['end_balance']
                 if bill_data[0]['month'] == timezone.localtime(timezone.now()).strftime('%Y %b'):
                     balance = bill_data[1]['end_balance'] + bill_data[0]['payment']
@@ -1823,23 +1824,8 @@ def generateBillData(payments, purchases, refunds, extras, products, user):
             if int(e.date.date().strftime('%Y')) == year and int(e.date.date().strftime('%m')) == month:
                 exist = True
                 data['purchase'] += e.amount
-                for i in range(len(data['purchaseList'])):
-                    if data['purchaseList'][i]['date'] == e.date.date():
-                        if data['purchaseList'][i]['product'] == e.product:
-                            data['purchaseList'][i]['quantity'] += e.quantity
-                            data['purchaseList'][i]['amount'] += e.amount
-                        else:
-                            data['purchaseList'].insert(1, {'date': e.date.date(), 'amount': e.amount, 'quantity': e.quantity, 'product': e.product})
-                        break
-                    elif data['purchaseList'][i]['date'] >= e.date.date() and i == 0:
-                        data['purchaseList'].insert(1, {'date': e.date.date(), 'amount': e.amount, 'quantity': e.quantity, 'product': e.product})
-                        break
-                    elif data['purchaseList'][i]['date'] <= e.date.date() and i == len(data['purchaseList'])-1:
-                        data['purchaseList'].insert(len(data['purchaseList'])-1, {'date': e.date.date(), 'amount': e.amount, 'quantity': e.quantity, 'product': e.product})
-                        break
-                    elif data['purchaseList'][i]['date'] <= e.date.date() and data['purchaseList'][i+1]['date'] >= e.date.date():
-                        data['purchaseList'].insert(i+1, {'date': e.date.date(), 'amount': e.amount, 'quantity': e.quantity, 'product': e.product})
-                        break
+                data['purchaseList'].append({'date': e.date.date(), 'amount': e.amount, 'quantity': e.quantity, 'product': e.product})
+
 
         for pt in products:
             amount = 0
@@ -1856,16 +1842,7 @@ def generateBillData(payments, purchases, refunds, extras, products, user):
                 data['purchase'] -= r.amount
                 exist = True
 
-                for i in range(len(data['purchaseList'])):
-                    if data['purchaseList'][i]['date'] >= r.date.date() and i == 0:
-                        data['purchaseList'].insert(1, {'date': r.date.date(), 'amount': r.amount * -1, 'quantity': r.quantity, 'product': r.product})
-                        break
-                    elif data['purchaseList'][i]['date'] <= r.date.date() and i == len(data['purchaseList'])-1:
-                        data['purchaseList'].insert(len(data['purchaseList'])-1, {'date': r.date.date(), 'amount': r.amount * -1, 'quantity': r.quantity, 'product': r.product})
-                        break
-                    elif data['purchaseList'][i]['date'] <= r.date.date() and data['purchaseList'][i+1]['date'] >= r.date.date():
-                        data['purchaseList'].insert(i+1, {'date': r.date.date(), 'amount': r.amount * -1, 'quantity': r.quantity, 'product': r.product})
-                        break
+                data['purchaseList'].append({'date': r.date.date(), 'amount': r.amount * -1, 'quantity': r.quantity, 'product': r.product})
                 
                 refundExist = False
                 for i in range(len(data['refund'])):
@@ -1876,6 +1853,9 @@ def generateBillData(payments, purchases, refunds, extras, products, user):
                 
                 if not refundExist:
                     data['refund'].append({'amount':r.amount, 'quantity':r.quantity, 'product':r.product})
+
+        data['purchaseList'] = sorted(data['purchaseList'], key=lambda x: x['date'], reverse=False)
+
         if exist:
             output.append(data)
 
@@ -1946,11 +1926,20 @@ def getPurchaseOfMonth(last_day, user):
     
     output = 0
 
-    first_day = last_day.replace(day=1)
-    
-    purchase = Purchase.objects.filter(Q(user=user), Q(date__lt = last_day) | Q(date__contains = last_day.date()), Q(date__gt = first_day) | Q(date__contains = first_day.date())).order_by('-date', '-id')
+    # reset the time of the last day
+    last_day = last_day.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    refund = Refund.objects.filter(Q(user=user), Q(date__lt = last_day) | Q(date__contains = last_day.date()), Q(date__gt = first_day) | Q(date__contains = first_day.date())).order_by('-date', '-id')
+    # substract 1 microsecond from the first day to get the last time of the day before
+    # for querying the data with greater than operator
+    first_day = last_day.replace(day=1) - timedelta(microseconds=1)
+
+    # adding one one day to the last day to get the first time of the next day
+    # for querying data with less than operator
+    last_day = last_day + timedelta(days=1)
+    
+    purchase = Purchase.objects.filter(Q(user=user), Q(date__lt = last_day), Q(date__gt = first_day)).order_by('-date', '-id')
+
+    refund = Refund.objects.filter(Q(user=user), Q(date__lt = last_day), Q(date__gt = first_day)).order_by('-date', '-id')
 
     for p in purchase:
 
