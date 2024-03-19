@@ -2627,6 +2627,13 @@ def admin_datatable_ajax_customers_followup(request):
         elif filterByStatus != 'all':
             query += " and (status='" + filterByStatus + "')"
 
+        # payment mode filter
+        filterByPaymentMode = request.POST.get('filterByPaymentMode')
+        if filterByPaymentMode == 'none' or filterByPaymentMode == '':
+            query += " and (payment_mode IS NULL)"
+        elif filterByPaymentMode != 'all':
+            query += " and (payment_mode='" + filterByPaymentMode + "')"
+
         # bill notification filter
         filterByBillNotification = request.POST.get('filterByBillNotification')
         if filterByBillNotification == 'sent':

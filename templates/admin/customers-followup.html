@@ -98,8 +98,15 @@
                                             <option value="not paid">Not Paid</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Payment mode</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByPaymentMode">
+                                            <option selected value="all">All</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="online">Online</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            
                             </div>
                         
                         </div>
@@ -176,6 +183,7 @@
                                 var status = $('#filterByStatus').val();
                                 var bill = $('#filterByBillNotification').val();
                                 var paid = $('#filterByBillPaid').val();
+                                var payment = $('#filterByPaymentMode').val();
 
                                 // Append to data
                                 data.filterByRoute = route;
@@ -183,6 +191,7 @@
                                 data.filterByStatus = status;
                                 data.filterByBillNotification = bill;
                                 data.filterByBillPaid = paid;
+                                data.filterByPaymentMode = payment;
                             }
 
                         },
@@ -240,6 +249,10 @@
                     });
 
                     $('#filterByBillPaid').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByPaymentMode').change(function(){
                         dataTable.draw();
                     });
             });
