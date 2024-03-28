@@ -62,7 +62,7 @@
                             <div class="card-body">
                                 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="formFileSm" class="form-label">Route</label>
                                         <select class="form-select" aria-label=".form-select-lg example" id="filterByRoute">
                                             <option selected value="all">All</option>
@@ -72,7 +72,7 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="formFileSm" class="form-label">Customer Type</label>
                                         <select class="form-select" aria-label=".form-select-lg example" id="filterByUserType">
                                             <option selected value="all">All</option>
@@ -80,6 +80,14 @@
                                             {% for ut in user_types %}
                                                 <option value="{{ut.id}}">{{ut.name}}</option>
                                             {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="filterByPaymentMode" class="form-label">Payment mode</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByPaymentMode">
+                                            <option selected value="all">All</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="online">Online</option>
                                         </select>
                                     </div>
                                 </div>
@@ -168,10 +176,12 @@
                                 // Read values
                                 var route = $('#filterByRoute').val();
                                 var name = $('#filterByUserType').val();
+                                var payment = $('#filterByPaymentMode').val();
 
                                 // Append to data
                                 data.filterByRoute = route;
                                 data.filterByUserType = name;
+                                data.filterByPaymentMode = payment;
                             }
 
                         },
@@ -198,6 +208,10 @@
                     });
 
                     $('#filterByUserType').change(function(){
+                        dataTable.draw();
+                    });
+
+                    $('#filterByPaymentMode').change(function(){
                         dataTable.draw();
                     });
             });
