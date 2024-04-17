@@ -1605,10 +1605,11 @@ def admin_datatable_ajax_customers_list(request):
         
         # payment mode filter
         filterByPaymentMode = request.POST.get('filterByPaymentMode')
-        if filterByPaymentMode == 'none' or filterByPaymentMode == '':
-            query += " and (payment_mode IS NULL)"
-        elif filterByPaymentMode != 'all':
-            query += " and (payment_mode='" + filterByPaymentMode + "')"
+        if filterByPaymentMode:
+            if filterByPaymentMode == 'none' or filterByPaymentMode == '':
+                query += " and (payment_mode IS NULL)"
+            elif filterByPaymentMode != 'all':
+                query += " and (payment_mode='" + filterByPaymentMode + "')"
             
         # total of filtered record
         totalRecordwithFilter = User.objects.raw('SELECT * FROM users_user WHERE true' + query)
