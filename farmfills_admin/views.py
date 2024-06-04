@@ -543,7 +543,8 @@ def customers_refunds(request):
     if Staff.objects.filter(id=user_id, admin=True).exists():
         user = Staff.objects.get(id=user_id, admin=True)
         customers = User.objects.all()
-        return render(request, 'admin/customers-refund.html', {'user':user, 'success':success, 'customers':customers})
+        routes = Route.objects.all()
+        return render(request, 'admin/customers-refund.html', {'user':user, 'success':success, 'customers':customers, 'routes': routes})
     else:
         return redirect('admin_login')
 
@@ -2046,25 +2047,29 @@ def admin_datatable_ajax_customers_refunds(request):
         # customer filter
         filterByCustomer = request.POST.get('filterByCustomer')
         if filterByCustomer != 'all':
-            query += " and (user_id=" + filterByCustomer + ")"
+            query += " and (r.user_id=" + filterByCustomer + ")"
 
 
         # from date filter
         filterByFromDate = request.POST.get('filterByFromDate')
         if filterByFromDate != '' and filterByFromDate is not None:
             filterByFromDate = timezone.make_aware(datetime.strptime(filterByFromDate, '%Y-%m-%d')).date()
-            query += " and (date(date) >= '" + str(filterByFromDate) + "')"
+            query += " and (date(r.date) >= '" + str(filterByFromDate) + "')"
 
+        # route filter
+        filterByRoute = request.POST.get('filterByRoute')
+        if filterByRoute != 'all':
+            query += " and (u.route_id='" + filterByRoute + "')"
 
         # to date filter
         filterByToDate = request.POST.get('filterByToDate')
         if filterByToDate != '' and filterByToDate is not None:
             filterByToDate = timezone.make_aware(datetime.strptime(filterByToDate, '%Y-%m-%d')).date()
-            query += " and (date(date) <= '" + str(filterByToDate) + "')"
+            query += " and (date(r.date) <= '" + str(filterByToDate) + "')"
 
             
         # total of filtered record
-        totalRecordwithFilter = Refund.objects.raw('SELECT * FROM users_refund WHERE true' + query)
+        totalRecordwithFilter = Refund.objects.raw('SELECT * FROM users_refund r INNER JOIN users_user u ON r.user_id = u.id WHERE true' + query)
         totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
 
         # total records
@@ -2072,9 +2077,9 @@ def admin_datatable_ajax_customers_refunds(request):
 
         # filtered records
         if columnName is not None:
-            query_data = Refund.objects.raw('SELECT * FROM users_refund WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
+            query_data = Refund.objects.raw('SELECT * FROM users_refund r INNER JOIN users_user u ON r.user_id = u.id WHERE true' + query + ' ORDER BY r.' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
         else:
-            query_data = Refund.objects.raw('SELECT * FROM users_refund WHERE true' + query + ' ORDER BY id LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
+            query_data = Refund.objects.raw('SELECT * FROM users_refund r INNER JOIN users_user u ON r.user_id = u.id WHERE true' + query + ' ORDER BY r.id LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
         
         data = []
         for q in query_data:

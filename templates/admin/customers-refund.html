@@ -76,12 +76,22 @@
                             <div class="card-body">
                                 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="formFileSm" class="form-label">Customer</label>
                                         <select class="form-select select2" data-live-search="true" aria-label=".form-select-lg example" data-width="100%" id="filterByCustomer">
                                             <option selected value="all">All</option>
                                             {% for u in customers %}
                                                 <option value="{{u.id}}">{{u.name}}{{u.delivery_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="formFileSm" class="form-label">Route</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" id="filterByRoute">
+                                            <option selected value="all">All</option>
+                                            <option value="none">No route</option>
+                                            {% for r in routes %}
+                                                <option value="{{r.id}}">{{r.name}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -208,11 +218,13 @@
                             var customer = $('#filterByCustomer').val();
                             var from = $('#filterByFromDate').val();
                             var to = $('#filterByToDate').val();
+                            var route = $('#filterByRoute').val();
 
                             // Append to data
                             data.filterByCustomer = customer;
                             data.filterByFromDate = from;
                             data.filterByToDate = to;
+                            data.filterByRoute = route;
                         }
 
                     },
@@ -242,6 +254,10 @@
                 });
 
                 $(document.body).on("change","#filterByToDate",function(){
+                    dataTable.draw();
+                });
+
+                $(document.body).on("change","#filterByRoute",function(){
                     dataTable.draw();
                 });
             });
