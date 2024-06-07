@@ -1996,7 +1996,7 @@ def send_bill(request):
         user.bill_send_date = timezone.localtime(timezone.now())
         user.save()
 
-        return redirect("https://api.whatsapp.com/send?phone=91" + user.mobile + "&text=%2ADear+Customer%2C%2A+%0D%0A%0D%0APlease+use+the+below+link+to+view+%26+pay+the+milk+bill%2C%0D%0A%0D%0A%2Ahttps%3A%2F%2Fapp.farmfills.com%2A%0D%0A%0D%0APlease+use+your+registered+mobile+number+%2A" + user.mobile + "%2A+for+login.+++%0D%0A%0D%0A_please+note+that+the+same+link+can+be+used+to+view+%2Aupcoming+bills%2A+%26+pay+online._%0D%0A%0D%0AThanks+%26+Regards%2C%0D%0A+--%0D%0A+%2ATeam+Farmfills%2A%0D%0A")
+        return redirect("https://api.whatsapp.com/send?phone=91" + user.mobile + "&text=%2ADear+Customer%2C%2A+%0D%0A%0D%0APlease+use+the+below+link+to+view+%26+pay+the+milk+bill%2C%0D%0A%0D%0A%2Ahttps%3A%2F%2Fapp.farmfills.com%2A%0D%0A%0D%0APlease+use+your+registered+mobile+number+%2A" + user.mobile + "%2A+for+login.+++%0D%0A%0D%0AGpay%20number%3A%208943743743%0A%0A_please+note+that+the+same+link+can+be+used+to+view+%2Aupcoming+bills%2A+%26+pay+online._%0D%0A%0D%0AThanks+%26+Regards%2C%0D%0A+--%0D%0A+%2ATeam+Farmfills%2A%0D%0A")
 
 
 # send prepaid link
