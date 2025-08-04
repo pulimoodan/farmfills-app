@@ -51,6 +51,7 @@ class Command(BaseCommand):
                 balance -= t.amount
             t.save()
         
+        user.balance = balance
         user.last_transaction = transaction_id
         user.save()
 

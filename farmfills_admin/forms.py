@@ -17,7 +17,7 @@ class ManagerForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        exclude = ['id', 'location', 'bill_send_date', 'last_transaction']
+        exclude = ['id', 'location', 'bill_send_date', 'last_transaction', 'balance']
 
 class ManagerUserForm(ModelForm):
     def __init__(self, routes, *args, **kwargs):
@@ -26,7 +26,7 @@ class ManagerUserForm(ModelForm):
 
     class Meta:
         model = User
-        exclude = ['id', 'location', 'bill_send_date', 'last_transaction']
+        exclude = ['id', 'location', 'bill_send_date', 'last_transaction', 'balance']
 
 class MessageForm(ModelForm):
     class Meta:

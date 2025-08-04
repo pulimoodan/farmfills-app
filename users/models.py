@@ -139,6 +139,8 @@ class User(models.Model):
 
     last_transaction = models.IntegerField(default=0)
 
+    balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+
     def __str__(self):
         return self.name + ' ' + self.delivery_name
 

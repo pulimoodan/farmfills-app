@@ -969,6 +969,9 @@ def update_balance_of_customer(user):
             t.balance = balance - t.amount
             balance -= t.amount
             t.save()
+            
+    user.balance = balance
+    user.save()
 
 
 # edit subscription
