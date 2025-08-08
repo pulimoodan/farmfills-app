@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+    <link  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
+      rel="stylesheet"  type='text/css'>
     <script src="https://kit.fontawesome.com/96b854ece5.js" crossorigin="anonymous"></script>
     <link href="https://fonts.cdnfonts.com/css/caros" rel="stylesheet">
     <title>Vendor | Farmfills</title>
@@ -19,10 +21,13 @@
     </nav>
     
     <div class="main">
-    
         <div class="container">
             <div class="body">
                 <h1>{{result.total}}</h1><h2>Packets</h2>
+                <button class="btn" onclick="location.reload()">
+                    <i class="fa fa-rotate-right"></i>
+                    Refresh
+                </button> 
             </div>
             <div class="body">
                 {% for a in result.areas %}
