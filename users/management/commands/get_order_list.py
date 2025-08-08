@@ -1,11 +1,7 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.utils import timezone
-from users.views import getEndBalanceOfMonth, last_day_of_month, getQuantityOfDate
-from delivery.views import getDeliveryListByDate
-from dispatch.views import getBulkCusomersOrder
-from datetime import datetime, timedelta
-from users.models import Staff, Purchase, Product, ExtraLess, Vacation, Subscription, UserType, User, Payment, Refund, Extra
 import pytz
+from datetime import datetime
+from dispatch.views import getDispatchData
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Creates daily transacion for all customers'
@@ -22,31 +18,18 @@ class Command(BaseCommand):
         
         try:
             date = datetime.strptime(options['date'], '%Y-%m-%d').replace(tzinfo=pytz.UTC).date()
+            output = getDispatchData(date)
 
             data.append(['Date: ', date.strftime('%d %b, %Y')])
             data.append(['------------', '------------'])
 
-            total = 0
 
-            delivery_boys = Staff.objects.filter(delivery=True)
+            for item in output['list']:
+                data.append([item['delivery_boy'], str(item['total'])])
 
-            for db in delivery_boys:
-
-                delivery = getDeliveryListByDate(db.route, options['date'])
-
-                data.append([db.name + ' (' + db.route.name + ')', str(delivery['total'])])
-
-                total += delivery['total']
-
-            bulk_customers_order = getBulkCusomersOrder(date)
-
-            total += bulk_customers_order['total']
-
-            for b in bulk_customers_order['list']:
-                data.append([b['user'].delivery_name, str(b['total'])])
             
             data.append(['------------', '------------'])
-            data.append(['Total', str(total)])
+            data.append(['Total', str(output['total'])])
 
             for line in data:
                 print(f"{line[0] : <50}{line[1] : ^50}")

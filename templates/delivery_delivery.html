@@ -19,19 +19,16 @@
         </ul>
     </nav>
 
-    <div class="delivery sections"?>
+    <div class="delivery sections">
 
         {% if early %}
-
             <div class="start">
                 <img src="{% static 'img/early.jpg' %}" alt="" width="200" style="margin-bottom:0"><br>
                 <p>You can start your delivery after 2 am.</p>
             </div>
-
         {% else %}
 
             {% if deliveryData is None %}
-
                 <div class="start">
                     <img src="{% static 'img/delivery_start.jpg' %}" alt=""><br>
                     <form action="{% url 'start_delivery' %}" method="POST">
@@ -39,74 +36,35 @@
                         <input type="text" value="{{total}}" name="packets" style="display: none;">
                         <input type="text" value="{{deliveryList|safe}}" name="list" style="display: none;">
                         <input type="text" value="{{assignedList|safe}}" name="extra-list" style="display: none;">
-                        <button class="generate" >Start</button>
+                        <button class="generate">Start</button>
                     </form>
                 </div>
-
             {% else %}
-
                 <div class="container sortable">
-
                     <div class="row head date"><p>{{ date }}</p><p>{{ total }}</p></div>
                     {% for l in deliveryList %}
-                        <div class="row c{{ l.packet }} list-group-item"><p>{{ l.user.delivery_name }}</p><p class="handle">{{ l.packet }}</p></div>
+                        <div class="row c{{ l.packet }} list-group-item"><p>{{ l.name }}</p><p class="handle">{{ l.packet }}</p></div>
                     {% endfor %}
 
                     {% if assignedList %}
                         <div class="row" style="visibility:hidden;">Hello</div>
                         <div class="row"><p>Extra</p></div>
                         {% for a in assignedList %}
-                            <div class="row c{{ a.packet }}"><p>{{ a.user.delivery_name }}</p><p>{{ a.packet }}</p></div>
+                            <div class="row c{{ a.packet }}"><p>{{ a.name }}</p><p>{{ a.packet }}</p></div>
                         {% endfor %}
                     {% endif %}
-
                 </div>
-
                     {% if deliveryData.end_time is None %}
                         <form action="{% url 'end_delivery' %}" method="POST">
                             {% csrf_token %}
                             <button type="submit" class="generate end">End</button>
                         </form>
                     {% endif %}
-
                 </div>
-
             {% endif %}
         
         {% endif %}
         
     </div>
-    
-    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
-
-    <script>
-    //     $(function() {
-    //         $(".sortable").sortable({
-    //             handle: '.handle',
-    //             stop: function(event,ui){
-    //                 $('.sortable').removeClass('hover');
-    //                 sortOrder();
-    //             },
-    //             over: function(event,ui){
-    //                 //will add class .hover to list
-    //                 $('.ui-sortable-placeholder').parents('.sortable').addClass('hover');
-    //             },
-    //             out: function(event,ui){
-    //                 $('.ui-sortable-placeholder').parents('.sortable').removeClass('hover');
-    //             },
-    //             change: function(event, ui) {
-    //                 //will style placeholder
-    //                 $('.ui-sortable-placeholder').css({
-    //                     visibility: 'visible',
-    //                     background: '#f0f0f0',
-    //                     border: '1px dashed #919191'
-    //                 });
-    //             }
-    //         });
-    //         $(".sortable").disableSelection();
-    //     });
-    // </script>
 </body>
 </html>

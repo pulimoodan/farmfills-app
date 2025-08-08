@@ -1,14 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime 
 from django.utils import timezone
-from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
-from requests.api import patch
+from farmfills_admin.business import daily_delivery_query
 from users.models import Staff, User, ExtraLess, Vacation, Subscription, Delivery, RouteAssign, Route, Product
 from users.views import get_client_ip, getQuantityOfDate, getEndBalanceOfMonth, last_day_of_month, format_number
 from django.db.models import Q, Sum
 import pytz
-from django.forms.models import model_to_dict
 from .models import DeliveryData
 
 
@@ -32,38 +29,50 @@ def delivery(request):
         user_id = request.session['farmfills_staff_id']
     except:
         pass
-    error = request.GET.get('error', None)
     if Staff.objects.filter(id= user_id, delivery=True).exists():
 
         # check if the delivery boy is early
         early = False
-        right_time = timezone.localtime(timezone.now()).replace(hour=2, minute=1, second=0, microsecond=0)
-        if right_time > timezone.localtime(timezone.now()):  # early if it's < 2:01 am
+        right_time = timezone.localtime().replace(hour=2, minute=1, second=0, microsecond=0)
+        if right_time > timezone.localtime():  # early if it's < 2:01 am
             early = True
         
         # get the generated delivery list
         staff = Staff.objects.get(id= user_id, delivery=True)
-        deliveryList = getGeneratedDeliveryListOfRoute(staff.route)
+        deliveryList = get_today_delivery_list(staff.route.id)
         
         # check if the delivery boy already started delivery
         deliveryData = None
         try:
-            deliveryData = Delivery.objects.get(delivery_boy=staff, date=timezone.localtime(timezone.now()).date())
-            if deliveryData.start_time is None:
-                deliveryData = None
+            deliveryData = Delivery.objects.get(delivery_boy=staff, date=timezone.localdate())
+            if deliveryData.start_time is None: deliveryData = None
         except:
             pass
 
         return render(request, 'delivery_delivery.html', {
             'deliveryList': deliveryList['list'], 
             'assignedList': deliveryList['assigned'], 
-            'total':deliveryList['total'], 
-            'date':deliveryList['date'],
-            'deliveryData':deliveryData, 
-            'early':early
+            'total': deliveryList['total'], 
+            'date': timezone.localdate(),
+            'deliveryData': deliveryData, 
+            'early': early
         })
     else:
         return redirect('delivery_login')
+
+def get_today_delivery_list(route_id):
+    output = {'list': [], 'total': 0, 'assigned': []}
+    result = daily_delivery_query(None, route_id)
+
+    for row in result:
+        (_, delivery_name, _, _, _, _, _, assigned, total_quantity, _) = row
+        if assigned:
+            output['assigned'].append({'name': delivery_name, 'packet': int(total_quantity)})
+        else:
+            output['list'].append({'name': delivery_name, 'packet': int(total_quantity)})
+        output['total'] += int(total_quantity)
+
+    return output
 
 
 # notification page
@@ -529,201 +538,6 @@ def getDeliveryListByDate(route, date):
     return output
 
 
-
-# get delivery list of a specific area within a specific day
-def getDeliveryListOfAreaByDate(area, date):
-    
-    customers = User.objects.filter(Q(route__area=area) | Q(area=area)).order_by('route_order')
-
-    thisdate = datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.UTC).date()
-    output  = {'date': thisdate.strftime("%b %d, %Y"), 'total':0, 'list':[], 'assigned':[]}
-
-    product = Product.objects.get(id=1)
-
-    for c in customers:
-
-        try:
-            assign = RouteAssign.objects.get(user=c)
-            if assign.to_route.area !=  area:
-                continue
-        except:
-            pass
-
-        last_day = last_day_of_month(datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.UTC))
-        balance = getEndBalanceOfMonth(last_day, c)
-
-        if c.user_type.suspend:
-            if format_number(balance) <= 0:
-                continue
-
-        extraless = ExtraLess.objects.filter(user=c)
-        vacations = Vacation.objects.filter(user=c)
-        subs = Subscription.objects.filter(user=c)
-
-        in_vacation = False
-
-        for e in extraless:
-            if e.start_date <= thisdate and e.end_date is None:
-                if c.user_type.suspend:
-                    if e.quantity * (product.price + c.user_type.price_variation) > balance:
-                        in_vacation = True
-                        break
-
-                output['total'] += int(e.quantity * 2)
-                output['list'].append({'user':c, 'packet': int(e.quantity * 2)})
-                in_vacation = True
-                break
-            elif e.end_date is not None:
-                if e.start_date <= thisdate and e.end_date >= thisdate:
-                    if c.user_type.suspend:
-                        if e.quantity * (product.price + c.user_type.price_variation) > balance:
-                            in_vacation = True
-                            break
-
-                    output['total'] += int(e.quantity * 2)
-                    output['list'].append({'user':c, 'packet': int(e.quantity * 2)})
-                    
-                    in_vacation = True
-                    break
-        
-        if not in_vacation:
-            for v in vacations:
-
-                if v.start_date <= thisdate and v.end_date is None :
-                    output['list'].append({'user':c, 'packet': 0})
-                    in_vacation = True
-                    break
-                elif v.end_date is not None:
-                    if v.start_date <= thisdate and v.end_date >= thisdate:
-                        output['list'].append({'user':c, 'packet': 0})
-                        in_vacation = True
-                        break
-        
-        if not in_vacation:
-            for s in subs:
-
-                if s.start_date <= thisdate and s.end_date is None :
-                    packet =  0
-                    try:
-                        packet = int(getQuantityOfDate(s, thisdate) * 2)
-                    except:
-                        pass
-                    if c.user_type.suspend:
-                        if float(packet/2) * float(product.price + c.user_type.price_variation) > balance:
-                            in_vacation = True
-                            break
-                            
-                    output['total'] += packet
-                    output['list'].append({'user':c, 'packet': int(packet)})
-                    break
-                elif s.end_date is not None:
-                    if s.start_date <= thisdate and s.end_date >= thisdate:
-                        packet =  0
-                        try:
-                            packet = int(getQuantityOfDate(s, thisdate) * 2)
-                        except:
-                            pass
-                        if c.user_type.suspend:
-                            if float(packet/2) * float(product.price + c.user_type.price_variation) > balance:
-                                in_vacation = True
-                                break
-                                
-                        output['total'] += packet
-                        output['list'].append({'user':c, 'packet': int(packet)})
-                        break
-        
-
-    assigned = RouteAssign.objects.filter(Q(to_route__area=area), ~Q(from_route__area=area))
-    for a in assigned:
-
-        last_day = last_day_of_month(datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.UTC))
-        balance = getEndBalanceOfMonth(last_day, a.user)
-
-        if a.user.user_type.suspend:
-            if format_number(balance) <= 0:
-                continue
-
-        extraless = ExtraLess.objects.filter(user=a.user)
-        vacations = Vacation.objects.filter(user=a.user)
-        subs = Subscription.objects.filter(user=a.user)
-
-        in_vacation = False
-
-        for e in extraless:
-            if e.start_date <= thisdate and e.end_date is None:
-                if a.user.user_type.suspend:
-                    if e.quantity * (product.price + ca.user.user_type.price_variation) > balance:
-                        in_vacation = True
-                        break
-
-                output['total'] += int(e.quantity * 2)
-                output['assigned'].append({'user':a.user, 'packet': int(e.quantity * 2)})
-                in_vacation = True
-                break
-            elif e.end_date is not None:
-                if e.start_date <= thisdate and e.end_date >= thisdate:
-                    if a.user.user_type.suspend:
-                        if e.quantity * (product.price + a.user.user_type.price_variation) > balance:
-                            in_vacation = True
-                            break
-
-                    output['total'] += int(e.quantity * 2)
-                    output['assigned'].append({'user':a.user, 'packet': int(e.quantity * 2)})
-                    
-                    in_vacation = True
-                    break
-        
-        if not in_vacation:
-            for v in vacations:
-
-                if v.start_date <= thisdate and v.end_date is None :
-                    output['assigned'].append({'user':a.user, 'packet': 0})
-                    in_vacation = True
-                elif v.end_date is not None:
-                    if v.start_date <= thisdate and v.end_date >= thisdate:
-                        output['assigned'].append({'user':a.user, 'packet': 0})
-                        in_vacation = True
-        
-        if not in_vacation:
-            for s in subs:
-
-                if s.start_date <= thisdate and s.end_date is None :
-                    packet =  0
-                    try:
-                        packet = int(getQuantityOfDate(s, thisdate) * 2)
-                    except:
-                        pass
-                    if a.user.user_type.suspend:
-                        if float(packet/2) * float(product.price + a.user.user_type.price_variation) > balance:
-                            in_vacation = True
-                            break
-                    output['total'] += packet
-                    output['assigned'].append({'user':a.user, 'packet': int(packet)})
-                elif s.end_date is not None:
-                    if s.start_date <= thisdate and s.end_date >= thisdate:
-                        packet =  0
-                        try:
-                            packet = int(getQuantityOfDate(s, thisdate) * 2)
-                        except:
-                            pass
-                        if a.user.user_type.suspend:
-                            if float(packet/2) * float(product.price + a.user.user_type.price_variation) > balance:
-                                in_vacation = True
-                                break
-                        output['total'] += packet
-                        output['assigned'].append({'user':a.user, 'packet': int(packet)})
-
-    return output
-
-
-# get generated delivery list of a specific area within a specific day
-def getGeneratedOrderOfAreaByDate(area, date):
-    thisdate = datetime.strptime(date, '%Y-%m-%d').replace(tzinfo=pytz.UTC).date()
-    total = DeliveryData.objects.filter(Q(route__area=area) | Q(area=area), Q(date=thisdate)).aggregate(Sum('packet'))['packet__sum']
-
-    return total
-
-
 # get notifications   
 def getNotifications(route):
     customers = User.objects.filter(route=route).order_by('route_order')
@@ -829,14 +643,3 @@ def end_delivery(request):
             return redirect('delivery_list') 
     else:
         return redirect('delivery_login')   
-
-
-# get generated data
-def getGeneratedDeliveryListOfRoute(route):
-    output = {'date': timezone.localtime(timezone.now()).date().strftime("%b %d, %Y"), 'list':[], 'assigned':[], 'total':0}
-
-    output['list'] = DeliveryData.objects.filter(date=timezone.localtime(timezone.now()).date(), route=route, is_extra=False).order_by('order')
-    output['assigned'] = DeliveryData.objects.filter(date=timezone.localtime(timezone.now()).date(), route=route, is_extra=True).order_by('order')
-    output['total'] = DeliveryData.objects.filter(date=timezone.localtime(timezone.now()).date(), route=route).aggregate(Sum('packet'))['packet__sum']
-
-    return output

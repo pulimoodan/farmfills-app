@@ -1,11 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-from delivery.views import getDeliveryListByDate
-import pytz
+from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.utils import timezone
-from datetime import datetime, timedelta
-from users.views import getEndBalanceOfMonth, last_day_of_month, checkDeliveyInDateFromSub
-from users.models import Staff, Purchase, Product, ExtraLess, Vacation, Subscription, UserType, User
+from datetime import timedelta
+from users.views import checkDeliveyInDateFromSub
+from users.models import Subscription
 
 class Command(BaseCommand):
     help = '-'

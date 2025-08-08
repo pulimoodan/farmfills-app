@@ -1,12 +1,7 @@
-from django.core.management.base import BaseCommand, CommandError
-from delivery.views import getDeliveryListByDate
 import pytz
-import subprocess
-from django.utils import timezone
-from datetime import datetime, timedelta, time
-from users.views import getEndBalanceOfMonth, last_day_of_month
-from users.models import Staff, Purchase, Product, ExtraLess, Vacation, Subscription, UserType, User
-from django.db.models import Q
+from datetime import datetime
+from users.models import  Purchase, Product
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Update purchase amount from a date'

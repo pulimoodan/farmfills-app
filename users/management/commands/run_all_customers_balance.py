@@ -1,11 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
-from delivery.views import getDeliveryListByDate
-import pytz
+from django.core.management.base import BaseCommand
 import subprocess
-from django.utils import timezone
-from datetime import datetime, timedelta
-from users.views import getEndBalanceOfMonth, last_day_of_month
-from users.models import Staff, Purchase, Product, ExtraLess, Vacation, Subscription, UserType, User
+from users.models import User
 
 class Command(BaseCommand):
     help = 'Update every customers balance'

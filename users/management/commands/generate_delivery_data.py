@@ -1,13 +1,8 @@
-from django.core.management.base import BaseCommand, CommandError
-from delivery.views import getDeliveryListByDate
-import pytz
-import subprocess
-from django.utils import timezone
-from datetime import datetime, timedelta
-from delivery.views import getDeliveryList
 from users.models import Route
+from django.utils import timezone
 from delivery.models import DeliveryData
-from dispatch.views import getBulkCusomersOrder
+from delivery.views import getDeliveryList
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Generate delivery data for each day'

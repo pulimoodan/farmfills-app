@@ -1,8 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
-from delivery.views import getDeliveryList
-from django.utils import timezone
-from users.views import getEndBalanceOfMonth, last_day_of_month, get_last_transaction
 from users.models import User
+from users.views import get_last_transaction
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Creates daily transacion for all customers'

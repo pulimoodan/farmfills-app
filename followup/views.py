@@ -3,9 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from users.models import Staff, Route, User
 from django.utils import timezone
 from datetime import time, timedelta, datetime
-from delivery.views import getDeliveryListByDate
 from users.models import FollowUp, Payment, Purchase, Extra, Refund, User
-from users.views import getEndBalanceOfMonth, last_day_of_month, getPurchaseOfMonth, getPaymentOfMonth
+from users.views import getEndBalanceOfMonth, last_day_of_month
 import pytz
 
 

@@ -1,10 +1,8 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
-from users.models import Staff, Route, User, Area
+from users.models import Staff
+from datetime import timedelta
 from django.utils import timezone
-from datetime import time, timedelta
-from delivery.views import getDeliveryListByDate, getDeliveryListOfAreaByDate, getDeliveryList, getGeneratedOrderOfAreaByDate
-from users.views import getEndBalanceOfMonth, last_day_of_month, getPurchaseOfMonth, getPaymentOfMonth
+from django.shortcuts import render, redirect
+from farmfills_admin.business import daily_delivery_query
 
 
 # login
@@ -27,11 +25,8 @@ def today(request):
         user_id = request.session['farmfills_staff_id']
     except:
         pass
-    error = request.GET.get('error', None)
-    route = request.GET.get('route', None)
     if Staff.objects.filter(id=user_id, vendor=True).exists():
-        
-        result = get_total_of_the_day(timezone.localtime(timezone.now()).date())
+        result = get_total_of_the_day()
         return render(request, 'vendor_today.html', {'result': result})
     else:
         return redirect('vendor_login')
@@ -44,10 +39,9 @@ def tomorrow(request):
         user_id = request.session['farmfills_staff_id']
     except:
         pass
-    error = request.GET.get('error', None)
-    route = request.GET.get('route', None)
     if Staff.objects.filter(id=user_id, vendor=True).exists():
-        result = get_total_of_the_day(timezone.localtime(timezone.now()).date() + timedelta(days=1))
+        yesterday = (timezone.localdate() - timedelta(days=1)).strftime('%Y-%m-%d')
+        result = get_total_of_the_day(yesterday)
         return render(request, 'vendor_tomorrow.html', {'result': result})
     else:
         return redirect('vendor_login')
@@ -68,25 +62,19 @@ def login_validation(request):
 
 
 # get total packets of a day
-def get_total_of_the_day(date):
+def get_total_of_the_day(date = None):
     output = {'total':0, 'areas':[]}
+    result = daily_delivery_query(date)
 
-    # check if the vendor is early
-    early = False
-    right_time = timezone.localtime(timezone.now()).replace(hour=2, minute=1, second=0, microsecond=0)
-    if right_time > timezone.localtime(timezone.now()):  # early if it's < 2:01 am
-        early = True
+    areas = {}
+    for row in result:
+        (_, delivery_name, user_type_id, _, _, _, area_name, _, total_quantity, _) = row
+        key = area_name
+        if user_type_id == 8:
+            key = delivery_name
+        areas[key] = areas.get(key, 0) + int(total_quantity)
+        output['total'] += int(total_quantity)
 
-    areas = Area.objects.all().exclude(id=1)
-    if date == timezone.localtime(timezone.now()).date() and not early:
-        for a in areas:
-            delivery = getGeneratedOrderOfAreaByDate(a, date.strftime('%Y-%m-%d'))
-            output['areas'].append({'name': a.name, 'total': delivery})
-            output['total'] += delivery
-    else:
-        for a in areas:
-            delivery = getDeliveryListOfAreaByDate(a, date.strftime('%Y-%m-%d'))
-            output['areas'].append({'name': a.name, 'total': delivery['total']})
-            output['total'] += delivery['total']
+    output['areas'] = [{'name': key, 'total': value} for key, value in areas.items()]
 
     return output
