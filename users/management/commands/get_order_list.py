@@ -10,7 +10,7 @@ class Command(BaseCommand):
         super().__init__(*args, **kwargs)
 
     def add_arguments(self, parser):
-        parser.add_argument('date', type=str)
+        parser.add_argument('date', type=str, nargs='?', default=datetime.today().strftime('%Y-%m-%d'))
 
     def handle(self, *args, **options):
 
@@ -32,9 +32,9 @@ class Command(BaseCommand):
             data.append(['Total', str(output['total'])])
 
             for line in data:
-                print(f"{line[0] : <50}{line[1] : ^50}")
+                self.stdout.write(f"{line[0] : <50}{line[1] : ^50}")
         except Exception as e:
-            print('==============     Error    ============')
-            print(e)
+            self.stdout.write('==============     Error    ============')
+            self.stdout.write(e)
 
         

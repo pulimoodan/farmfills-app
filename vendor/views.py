@@ -40,8 +40,8 @@ def tomorrow(request):
     except:
         pass
     if Staff.objects.filter(id=user_id, vendor=True).exists():
-        yesterday = (timezone.localdate() - timedelta(days=1)).strftime('%Y-%m-%d')
-        result = get_total_of_the_day(yesterday)
+        tomorrow = (timezone.localdate() + timedelta(days=1)).strftime('%Y-%m-%d')
+        result = get_total_of_the_day(tomorrow)
         return render(request, 'vendor_tomorrow.html', {'result': result})
     else:
         return redirect('vendor_login')

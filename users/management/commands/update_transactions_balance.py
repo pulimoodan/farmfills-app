@@ -51,5 +51,3 @@ class Command(BaseCommand):
         user.balance = balance
         user.last_transaction = transaction_id
         user.save()
-
-        self.stdout.write(self.style.SUCCESS('Successfully updated transactions'))
