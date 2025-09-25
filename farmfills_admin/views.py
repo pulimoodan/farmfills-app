@@ -1614,13 +1614,6 @@ def admin_datatable_ajax_customers_list(request):
                 query += " and (payment_mode IS NULL)"
             elif filterByPaymentMode != 'all':
                 query += " and (payment_mode='" + filterByPaymentMode + "')"
-            
-        # total of filtered record
-        totalRecordwithFilter = User.objects.raw('SELECT * FROM users_user WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = User.objects.all().count()
 
         # filtered records
         if columnName is not None:
@@ -1638,8 +1631,8 @@ def admin_datatable_ajax_customers_list(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -1678,13 +1671,6 @@ def admin_datatable_ajax_customers_subscriptions(request):
         if filterBySubType != 'all':
             query += " and (sub_type='" + filterBySubType + "')"
             
-        # total of filtered record
-        totalRecordwithFilter = Subscription.objects.raw('SELECT * FROM users_subscription WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Subscription.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Subscription.objects.raw('SELECT * FROM users_subscription WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -1715,8 +1701,8 @@ def admin_datatable_ajax_customers_subscriptions(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -1762,13 +1748,6 @@ def admin_datatable_ajax_customers_extraless(request):
             filterByEndDate = timezone.make_aware(datetime.strptime(filterByEndDate, '%Y-%m-%d')).date()
             query += " and (end_date = '" + str(filterByEndDate) + "' )"
 
-        # total of filtered record
-        totalRecordwithFilter = ExtraLess.objects.raw('SELECT * FROM users_extraless WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = ExtraLess.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = ExtraLess.objects.raw('SELECT * FROM users_extraless WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -1787,8 +1766,8 @@ def admin_datatable_ajax_customers_extraless(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -1834,13 +1813,6 @@ def admin_datatable_ajax_customers_vacations(request):
             filterByEndDate = timezone.make_aware(datetime.strptime(filterByEndDate, '%Y-%m-%d')).date()
             query += " and (end_date = '" + str(filterByEndDate) + "' )"
 
-        # total of filtered record
-        totalRecordwithFilter = Vacation.objects.raw('SELECT * FROM users_vacation WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Vacation.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Vacation.objects.raw('SELECT * FROM users_vacation WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -1859,8 +1831,8 @@ def admin_datatable_ajax_customers_vacations(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -1913,14 +1885,6 @@ def admin_datatable_ajax_customers_purchases(request):
             filterByToDate = timezone.make_aware(datetime.strptime(filterByToDate, '%Y-%m-%d')).date()
             query += " and (date(date) <= '" + str(filterByToDate) + "')"
 
-            
-        # total of filtered record
-        totalRecordwithFilter = Purchase.objects.raw('SELECT * FROM users_purchase WHERE true' + query)
-        totalRecordwithFilter = len(list(totalRecordwithFilter))
-
-        # total records
-        totalRecords = Purchase.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Purchase.objects.raw('SELECT * FROM users_purchase WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -1936,8 +1900,8 @@ def admin_datatable_ajax_customers_purchases(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -1989,14 +1953,6 @@ def admin_datatable_ajax_customers_extras(request):
             filterByToDate = timezone.make_aware(datetime.strptime(filterByToDate, '%Y-%m-%d')).date()
             query += " and (date(date) <= '" + str(filterByToDate) + "')"
 
-            
-        # total of filtered record
-        totalRecordwithFilter = Extra.objects.raw('SELECT * FROM users_extra WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Extra.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Extra.objects.raw('SELECT * FROM users_extra WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2012,8 +1968,8 @@ def admin_datatable_ajax_customers_extras(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2070,14 +2026,6 @@ def admin_datatable_ajax_customers_refunds(request):
             filterByToDate = timezone.make_aware(datetime.strptime(filterByToDate, '%Y-%m-%d')).date()
             query += " and (date(r.date) <= '" + str(filterByToDate) + "')"
 
-            
-        # total of filtered record
-        totalRecordwithFilter = Refund.objects.raw('SELECT * FROM users_refund r INNER JOIN users_user u ON r.user_id = u.id WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Refund.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Refund.objects.raw('SELECT * FROM users_refund r INNER JOIN users_user u ON r.user_id = u.id WHERE true' + query + ' ORDER BY r.' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2093,8 +2041,8 @@ def admin_datatable_ajax_customers_refunds(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2150,13 +2098,6 @@ def admin_datatable_ajax_customers_payments(request):
             query += " and (date(date) <= '" + str(filterByToDate) + "')"
 
             
-        # total of filtered record
-        totalRecordwithFilter = Payment.objects.raw('SELECT * FROM users_payment WHERE paid=true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Payment.objects.filter(paid=True).count()
-
         # filtered records
         if columnName is not None:
             query_data = Payment.objects.raw('SELECT * FROM users_payment WHERE paid=true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2171,8 +2112,8 @@ def admin_datatable_ajax_customers_payments(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2304,17 +2245,6 @@ def admin_datatable_ajax_followup(request):
                 query += " and (next_date >= '" + str(filterByNextDate) + "')"
 
             
-        # total of filtered record
-        totalRecordwithFilter = 0
-        if searchValue is None and searchValue == '':
-            totalRecordwithFilter = FollowUp.objects.raw('SELECT * FROM users_followup WHERE true' + query)
-        else:
-            totalRecordwithFilter = FollowUp.objects.raw('SELECT * FROM users_followup a ' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = FollowUp.objects.all().count()
-
         # filtered records
         if columnName is not None:
             if searchValue is None and searchValue == '':
@@ -2338,8 +2268,8 @@ def admin_datatable_ajax_followup(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2374,18 +2304,6 @@ def admin_datatable_ajax_message(request):
             searchValue = searchValue.lower()
             query += " AND (LOWER(title) like '%%" + searchValue + "%%' or LOWER(content) like '%%" + searchValue + "%%')"
 
-        
-        # total records
-        totalRecords = Message.objects.all().count()
-
-        # total of filtered record
-        totalRecordwithFilter = 0
-        if searchValue is None and searchValue == '':
-            totalRecordwithFilter = Message.objects.raw('SELECT * FROM users_message WHERE true' + query)
-            totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-        else:
-            totalRecordwithFilter = totalRecords
-
         # filtered records
         if columnName is not None:
             query_data = Message.objects.raw('SELECT * FROM users_message WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2402,8 +2320,8 @@ def admin_datatable_ajax_message(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2445,13 +2363,6 @@ def admin_datatable_ajax_managers(request):
             query += " and (r.id=" + filterByRoute + ")"
 
 
-        # total of filtered record
-        totalRecordwithFilter = Manager.objects.raw('SELECT DISTINCT m.id, m.name, m.uname, m.password FROM users_manager m INNER JOIN users_manager_routes mr ON m.id = mr.manager_id INNER JOIN users_route r ON mr.route_id = r.id WHERE true ' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = Manager.objects.all().count()
-
         # filtered records
         if columnName is not None:
             query_data = Manager.objects.raw('SELECT DISTINCT m.id, m.name, m.uname, m.password FROM users_manager m INNER JOIN users_manager_routes mr ON m.id = mr.manager_id INNER JOIN users_route r ON mr.route_id = r.id WHERE true ' + query + ' ORDER BY m.' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2474,8 +2385,8 @@ def admin_datatable_ajax_managers(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2531,14 +2442,6 @@ def admin_datatable_ajax_staffs(request):
         elif filterByPosition != 'all':
             query += " and (" + filterByPosition + "=TRUE)"
 
-
-        # total of filtered record
-        totalRecordwithFilter = Staff.objects.raw('SELECT * FROM users_staff WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = len(Staff.objects.all())
-
         # filtered records
         if columnName is not None:
             query_data = Staff.objects.raw('SELECT * FROM users_staff WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2580,8 +2483,8 @@ def admin_datatable_ajax_staffs(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
@@ -2687,13 +2590,6 @@ def admin_datatable_ajax_customers_followup(request):
             filterCustomers = ', '.join(str(i) for i in filterCustomers)
             query += " and (id IN (" + filterCustomers + "))"
             
-        # total of filtered record
-        totalRecordwithFilter = User.objects.raw('SELECT * FROM users_user WHERE true' + query)
-        totalRecordwithFilter = sum(1 for result in totalRecordwithFilter)
-
-        # total records
-        totalRecords = len(customers)
-
         # filtered records
         if columnName is not None:
             query_data = User.objects.raw('SELECT * FROM users_user WHERE true' + query + ' ORDER BY ' + columnName + ' ' + columnSortOrder + ' LIMIT ' + rowperpage + ' OFFSET ' + row + ';')
@@ -2765,8 +2661,8 @@ def admin_datatable_ajax_customers_followup(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : totalRecords,
-            "iTotalDisplayRecords" : totalRecordwithFilter,
+            "iTotalRecords" : 1000,
+            "iTotalDisplayRecords" : 200,
             "aaData" : data
         }
         return JsonResponse(response)
