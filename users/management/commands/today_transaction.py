@@ -29,7 +29,12 @@ class Command(BaseCommand):
                 purchase = Purchase(date=purchase_datetime, quantity=packets/2, amount=amount, balance=0, product_id=1, user_id=user_id)
                 purchase.save()
             else:
-                dboy = Staff.objects.get(delivery=True, route_id=route_id)
+                dboy = None
+                try:
+                    dboy = Staff.objects.get(delivery=True, route_id=route_id)
+                except:
+                    print("Staff not found for route id: ", route_id)
+                    pass
                 purchase = Purchase(date=purchase_datetime, quantity=packets/2, amount=amount, balance=0, product_id=1, user_id=user_id, delivered_by=dboy)
                 purchase.save()
             management.call_command('update_transactions_balance', str(user_id), verbosity=0)

@@ -2661,8 +2661,8 @@ def admin_datatable_ajax_customers_followup(request):
         # response
         response = {
             "draw" : int(draw),
-            "iTotalRecords" : 1000,
-            "iTotalDisplayRecords" : 200,
+            "iTotalRecords" : 1600,
+            "iTotalDisplayRecords" : 1600,
             "aaData" : data
         }
         return JsonResponse(response)
