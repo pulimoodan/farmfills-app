@@ -68,7 +68,7 @@ def get_total_of_the_day(date = None):
 
     areas = {}
     for row in result:
-        (_, delivery_name, user_type_id, _, _, _, area_name, _, total_quantity, _) = row
+        (_, delivery_name, _, user_type_id, _, _, _, area_name, _, total_quantity, _) = row
         key = area_name
         if user_type_id == 8:
             key = delivery_name

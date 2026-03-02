@@ -19,7 +19,7 @@ class Command(BaseCommand):
         purchase_datetime = datetime.combine(selected_date, time.min).replace(tzinfo=dt_timezone.utc)
 
         for row in result:
-            (user_id, delivery_name, user_type_id, _, _, route_id, _, assigned, packets, cost) = row
+            (user_id, _, _, user_type_id, _, _, route_id, _, _, packets, cost) = row
             amount = cost * (packets / 2)
             
             if Purchase.objects.filter(user_id=user_id, date__date=selected_date).exists():

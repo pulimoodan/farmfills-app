@@ -65,7 +65,7 @@ def get_today_delivery_list(route_id):
     result = daily_delivery_query(None, route_id)
 
     for row in result:
-        (_, delivery_name, _, _, _, _, _, assigned, total_quantity, _) = row
+        (_, delivery_name, _, _, _, _, _, _, assigned, total_quantity, _) = row
         if assigned:
             output['assigned'].append({'name': delivery_name, 'packet': int(total_quantity)})
         else:

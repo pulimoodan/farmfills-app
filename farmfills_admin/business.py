@@ -29,6 +29,7 @@ def daily_delivery_query(date=None, route_id=None):
                 SELECT
                     u.id AS user_id,
                     u.delivery_name,
+                    u.mobile,
                     u.balance,
                     u.user_type_id,
                     ut.suspend,
@@ -113,7 +114,7 @@ def daily_delivery_query(date=None, route_id=None):
                 ORDER BY u.route_order
             )
 
-            SELECT user_id, delivery_name, user_type_id, delivery_boy, route_name, route_id, area_name, assigned, total_quantity, cost
+            SELECT user_id, delivery_name, mobile, user_type_id, delivery_boy, route_name, route_id, area_name, assigned, total_quantity, cost
             FROM user_costs
             --- Only include users with sufficient balance when their account type is to be suspended
             WHERE total_quantity != 0 AND (suspend = FALSE OR balance >= cost * total_quantity)

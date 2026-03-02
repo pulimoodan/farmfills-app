@@ -69,7 +69,7 @@ def getDispatchData(date = None):
 
     routes = {}
     for row in result:
-        (_, delivery_name, user_type_id, delivery_boy, route_name, _, _, _, total_quantity, _) = row
+        (_, delivery_name, _, user_type_id, delivery_boy, route_name, _, _, _, total_quantity, _) = row
         key = f"{delivery_boy} ({route_name})"
         if user_type_id == 8:
             key = f"{delivery_name} (Bulk)"
